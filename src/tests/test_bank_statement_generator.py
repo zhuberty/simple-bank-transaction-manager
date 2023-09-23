@@ -1,6 +1,6 @@
 import csv
 import os
-from utils.create_mock_bank_statement import generate_bank_statement, write_to_csv  # Assuming your original code is in a file named "bank_statement_generator.py"
+from .utils.create_mock_bank_statement import generate_bank_statement, write_to_csv  # Assuming your original code is in a file named "bank_statement_generator.py"
 
 def test_generate_bank_statement_num_entries():
     num_entries = 500
