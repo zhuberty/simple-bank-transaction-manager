@@ -32,19 +32,25 @@ def test_write_to_csv():
 
 def test_write_to_csv_no_overwrite():
     data = generate_bank_statement(10)
-    filename = "./src/tests/test_data/test_mock_bank_statement_remove.csv"
-    write_to_csv(filename, data)
+    # get this file's directrory path
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+
+    filename = "test_mock_bank_statement_remove.csv"
+    # get the full path to the file
+    filepath = os.path.join(current_dir, filename)
+
+    write_to_csv(filepath, data)
 
     # Create a dummy entry
     dummy_entry = generate_bank_statement(1)
 
     # Attempt to write the dummy entry to the same file
-    write_to_csv(filename, dummy_entry)
+    write_to_csv(filepath, dummy_entry)
 
     # Check if the file contains only the original 10 entries and not the dummy entry
-    with open(filename, 'r') as file:
+    with open(filepath, 'r') as file:
         reader = csv.reader(file)
         assert sum(1 for row in reader) == 11  # 10 entries + 1 header
     
     # Clean up after test
-    os.remove(filename)
+    os.remove(filepath)
