@@ -40,8 +40,3 @@ def write_to_csv(filename, data):
         writer = csv.writer(file)
         writer.writerow(["Account", "ChkRef", "Debit", "Credit", "Date", "Description"])
         writer.writerows(data)
-
-
-if __name__ == '__main__':
-    statement = generate_bank_statement(1000)
-    write_to_csv("mock_bank_statement.csv", statement)
