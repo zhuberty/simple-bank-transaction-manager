@@ -1,5 +1,5 @@
-from ..categorizer import categorize
-from ..transaction import Transaction
+from TransactionManager.categorizer import categorize
+from TransactionManager.transaction import Transaction
 
 def test_categorizer():
     grocery_transaction = Transaction("", "", 100.00, "", "GROCERIES XYZ")

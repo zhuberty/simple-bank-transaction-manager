@@ -1,4 +1,4 @@
-from ..transaction import Transaction
+from TransactionManager.transaction import Transaction
 
 def test_transaction_initialization():
     transaction = Transaction("45253123", "7175", 491.00, "2022-06-18", "Wilson-Humphrey")

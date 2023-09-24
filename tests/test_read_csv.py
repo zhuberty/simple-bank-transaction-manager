@@ -1,5 +1,5 @@
 import os
-from ..csv_reader import read_csv
+from TransactionManager.csv_reader import read_csv
 
 def test_read_csv():
     # get this file's directrory path

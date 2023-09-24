@@ -1,6 +1,6 @@
-from ..categorizer import categorize
-from ..transaction import Transaction
-from ..report_generator import generate_report
+from TransactionManager.categorizer import categorize
+from TransactionManager.transaction import Transaction
+from TransactionManager.report_generator import generate_report
 
 def test_generate_report():
     transactions = [
