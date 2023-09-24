@@ -1,6 +1,6 @@
 
 import csv
-from transaction import Transaction
+from .transaction import Transaction
 
 def read_csv(file_path):
     transactions = []

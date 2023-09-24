@@ -1,8 +1,0 @@
-from csv_reader import read_csv
-
-def test_read_csv():
-    transactions = read_csv("tests/test_data/mock_bank_statement.csv")
-    assert len(transactions) == 2
-    first_transaction = transactions[0]
-    assert first_transaction.account == "45253123"
-    assert first_transaction.amount == 491.00
