@@ -3,7 +3,7 @@ from .categorizer import categorize
 from .report_generator import generate_report
 from .utils import get_calling_file_dir
 
-CSV_DIRECTORY = "data/"  # relative path to the data directory from src
+ACCOUNTS_DIRECTORY = get_calling_file_dir(__file__) + "/../tests/test_data/accounts/"
 DEFAULT_CSV_FILE = "mock_bank_statement.csv"
 
 def main():
@@ -18,4 +18,4 @@ def main():
         print(f"{category}: {total:.2f}")
 
 if __name__ == "__main__":
-    print(get_calling_file_dir())
+    main()
