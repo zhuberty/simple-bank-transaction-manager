@@ -1,4 +1,5 @@
 import os
+import logging
 
 
 class Directory:
@@ -9,4 +10,5 @@ class Directory:
         return f"Directory: {self.path}"
 
     def exists(self):
+        logging.debug(f"Checking if directory exists: {self.path}")
         return os.path.exists(self.path)
