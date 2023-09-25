@@ -23,7 +23,7 @@ jobs:
     # Assuming you're using pytest with pytest-cov to generate coverage
     - name: Run tests with coverage
       run: |
-        poetry run pytest --cov=src --cov-report=xml:coverage.xml
+        poetry run pytest --cov=TransactionManager --cov-report=xml:coverage.xml
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
