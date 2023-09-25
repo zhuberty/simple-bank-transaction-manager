@@ -15,7 +15,7 @@ Coming soon...
 ## Experiencing Issues?
 Describe the problem on the Issues page in GitHub for this project.
 
-# Instructions for Software Developers
+# Instructions for Contributors
 ## Install Poetry
 This is a convenient package manager for Python projects. It is used to install the dependencies for this project.
 
