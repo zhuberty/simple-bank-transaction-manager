@@ -8,7 +8,7 @@ class ClientPage:
         title: str,
         short_introduction: str = "",
         action_options: list = [],
-        dialog: ClientDialog = ClientDialog(),
+        dialog: ClientDialog = ClientDialog(['Go to sleep']),
     ):
         self.title = title
         self.short_introduction = short_introduction
@@ -16,7 +16,7 @@ class ClientPage:
         self.sections = []
         self.dialog = dialog
         self.display_content()
-        self.dialog.start()
+        self.dialog.loop()
 
     def add_section(self, section):
         self.sections.append(section)
