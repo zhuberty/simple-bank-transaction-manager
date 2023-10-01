@@ -1,3 +1,4 @@
+import tkinter as tk
 import pytest
 from time import sleep
 from TransactionManager.Client import Client
@@ -78,11 +79,36 @@ class TestClientAdminPage:
         self.client.delete_home_dir()
         assert not path_exists(self.client.home_dir)
 
-    def test_console_initialized(self):
+    def test_clear_console(self):
         page = self.client.frames[Client.PageAdmin]
-        assert page.console.get("1.0", "1.end") == "Initialized application."
+        page.clear_console()
+        assert page.console.get("1.0", "1.end") == ""
+        page.log_message("Test message.")
+        assert page.console.get("1.0", "1.end") == "Test message."
 
     def test_log_message(self):
         page = self.client.frames[Client.PageAdmin]
+        page.clear_console()
         page.log_message("Test message.")
-        assert page.console.get("2.0", "2.end") == "Test message."
+        assert "Test message." in page.console.get("1.0", tk.END)
+
+    def test_get_console_length(self):
+        page = self.client.frames[Client.PageAdmin]
+        page.clear_console()
+        assert page.get_console_length() == 1
+        page.log_message("Test message.")
+        assert page.get_console_length() == 2
+        page.log_message("Test message.")
+        assert page.get_console_length() == 3
+
+    @pytest.mark.order(1)
+    def test_handle_console_buffer(self):
+        page = self.client.frames[Client.PageAdmin]
+        page.MAX_CONOLE_LINES = 2
+        page.clear_console()
+        page.log_message("Test message 1.")
+        page.log_message("Test message 2.")
+        page.log_message("Test message 3.")
+        assert page.console.get("1.0", "1.end") == "Test message 2."
+        assert page.console.get("2.0", "2.end") == "Test message 3."
+        assert page.console.get("3.0", "3.end") == ""
