@@ -17,8 +17,17 @@ class PageAdmin(tk.Frame):
         self.check_directories_btn.pack()
 
         # a read-only text window for displaying debug info
-        self.debug_window = tk.Text(self, height=10, width=80)
-        self.debug_window.pack()
+        self.console = tk.Text(self, height=10, width=80, bg="black", fg="white")
+        self.console.config(state="disabled")
+        self.console.pack()
+        # set the value of the console to "hello world"
+        self.log_message("Initialized application.")
+
+    def log_message(self, message):
+        self.console.config(state="normal")
+        self.console.insert(tk.END, message + '\n')
+        self.console.see(tk.END)
+        self.console.config(state="disabled")
 
     def check_directories(self):
         pass

@@ -37,7 +37,7 @@ class TestClientMainPage:
     def test_check_home_dir_exists(self):
         assert path_exists(self.client.home_dir)
     
-    @pytest.mark.order(2)
+    @pytest.mark.order(99)
     def test_delete_home_dir(self):
         self.client.delete_home_dir()
         assert not path_exists(self.client.home_dir)
@@ -61,17 +61,28 @@ class TestClientAdminPage:
         assert page.check_directories_btn is not None
         assert page.check_directories_btn["text"] == "Check Directories"
     
-    def test_init_debug_window(self):
+    def test_init_console(self):
         page = self.client.frames[Client.PageAdmin]
-        assert page.debug_window.winfo_viewable()
-        assert page.debug_window["height"] == 10
-        assert page.debug_window["width"] == 80
+        assert page.console.winfo_viewable()
+        assert page.console["height"] == 10
+        assert page.console["width"] == 80
+        # make sure the debug window is read-only
+        assert page.console["state"] == "disabled"
 
     @pytest.mark.order(1)
     def test_check_home_dir_exists(self):
         assert path_exists(self.client.home_dir)
 
-    @pytest.mark.order(2)
+    @pytest.mark.order(99)
     def test_delete_home_dir(self):
         self.client.delete_home_dir()
         assert not path_exists(self.client.home_dir)
+
+    def test_console_initialized(self):
+        page = self.client.frames[Client.PageAdmin]
+        assert page.console.get("1.0", "1.end") == "Initialized application."
+
+    def test_log_message(self):
+        page = self.client.frames[Client.PageAdmin]
+        page.log_message("Test message.")
+        assert page.console.get("2.0", "2.end") == "Test message."
