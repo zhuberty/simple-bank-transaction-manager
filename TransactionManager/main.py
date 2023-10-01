@@ -1,11 +1,11 @@
 import os
 import logging
-from .utils import get_calling_file_dir
+from .utils import get_cwd
 from .Client import Client
 
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
 
-ACCOUNTS_DIRECTORY = os.path.join(get_calling_file_dir(__file__), "../tests/test_data/accounts/Test Bank Account Name/statements")
+ACCOUNTS_DIRECTORY = os.path.join(get_cwd(__file__), "../tests/test_data/accounts/Test Bank Account Name/statements")
 
 def main():
     client = Client.Client()

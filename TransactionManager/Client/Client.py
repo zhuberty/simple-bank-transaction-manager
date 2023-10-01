@@ -1,4 +1,6 @@
+import os
 import tkinter as tk
+from ..utils import get_filepath
 
 
 class PageAdmin(tk.Frame):
@@ -6,12 +8,30 @@ class PageAdmin(tk.Frame):
         super().__init__(parent)
         label = tk.Label(self, text="This is the PageAdmin")
         label.pack(pady=10)
-        button = tk.Button(
+        self.check_directories_btn = tk.Button(
             self,
-            text="Go to Main Page",
-            command=lambda: controller.show_frame(MainPage),
+            text="Check Directories",
+            command=lambda: self.check_directories(),
         )
-        button.pack()
+        self.check_directories_btn.pack()
+        self.errors = []
+
+        # a read-only text window for displaying debug info
+        self.debug_window = tk.Text(self, height=10, width=80)
+
+    def check_directories(self):
+        # relative_paths_to_check = [
+        #     "../user_data",
+        # ]
+        # for relative_path in relative_paths_to_check:
+        #     actual_path = os.path.join(get_cwd(__file__), relative_path)
+        #     if not os.path.exists(actual_path):
+        #         self.errors.append(FileNotFoundError(
+        #             f"Path {actual_path} does not exist. Please create this directory and try again."
+        #         ))
+        # for error in self.errors:
+        #     raise error
+        pass
 
 
 class MainPage(tk.Frame):
@@ -28,8 +48,12 @@ class MainPage(tk.Frame):
 
 
 class Client(tk.Tk):
-    def __init__(self):
+    def __init__(self, home_dir):
         super().__init__()
+        self.home_dir = get_filepath(__file__, home_dir)
+        if not os.path.exists(self.home_dir):
+            self.create_home_dir()
+
         self.title("Transaction Manager")
         self.geometry("800x600+100+100")
 
@@ -52,3 +76,9 @@ class Client(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
         frame.is_active = True  # Set is_active to True for the displayed frame
+
+    def create_home_dir(self):
+        os.mkdir(self.home_dir)
+
+    def delete_home_dir(self):
+        os.rmdir(self.home_dir)

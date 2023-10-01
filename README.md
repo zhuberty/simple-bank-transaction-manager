@@ -1,5 +1,5 @@
 # Simple Bank Transaction Manager
-[![Python Coveralls](https://github.com/zhuberty/simple-bank-transaction-manager/actions/workflows/coveralls.yml/badge.svg)](https://github.com/zhuberty/simple-bank-transaction-manager/actions/workflows/coveralls.yml) [![Coverage Status](https://coveralls.io/repos/github/zhuberty/simple-bank-transaction-manager/badge.svg)](https://coveralls.io/github/zhuberty/simple-bank-transaction-manager)
+[![Python Coveralls](https://github.com/zhuberty/simple-bank-transaction-manager/actions/workflows/coveralls.yml/badge.svg)](https://github.com/zhuberty/simple-bank-transaction-manager/actions/workflows/coveralls.yml) [![Coverage Status](https://coveralls.io/repos/github/zhuberty/simple-bank-transaction-manager/badge.svg?branch=main)](https://coveralls.io/github/zhuberty/simple-bank-transaction-manager?branch=main)
 
 This free software project aims to empower the common person to categorize their bank transactions and gain simple but comprehensive insights into spending and earning over time.
 
