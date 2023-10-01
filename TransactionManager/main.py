@@ -1,13 +1,15 @@
 import os
 import logging
-import Client
+from utils import get_calling_file_dir
+from UserInterface import TkInterface
 
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
 
-ACCOUNTS_DIRECTORY = os.path.join(get_calling_file_dir(__file__), "/../tests/test_data/accounts/")
+ACCOUNTS_DIRECTORY = os.path.join(get_calling_file_dir(__file__), "../tests/test_data/accounts/Test Bank Account Name/statements")
 
 def main():
-    client = Client()
+    app = TkInterface.TransactionCategorizer(ACCOUNTS_DIRECTORY)
+    app.mainloop()
 
 if __name__ == "__main__":
     main()
