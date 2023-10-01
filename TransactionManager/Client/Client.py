@@ -6,6 +6,7 @@ from ..utils import get_filepath
 class PageAdmin(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.errors = []
         label = tk.Label(self, text="This is the PageAdmin")
         label.pack(pady=10)
         self.check_directories_btn = tk.Button(
@@ -14,10 +15,10 @@ class PageAdmin(tk.Frame):
             command=lambda: self.check_directories(),
         )
         self.check_directories_btn.pack()
-        self.errors = []
 
         # a read-only text window for displaying debug info
         self.debug_window = tk.Text(self, height=10, width=80)
+        self.debug_window.pack()
 
     def check_directories(self):
         pass

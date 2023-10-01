@@ -8,6 +8,7 @@ authors = ["Zach Huberty <me@zachhuberty.com>"]
 python = ">=3.11,<3.13"
 faker = "^19.6.2"
 pandas = "^2.1.1"
+pytest-order = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 
