@@ -6,7 +6,7 @@ from ..utils import get_filepath
 class PageAdmin(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        self.MAX_CONOLE_LINES = 100
+        self.MAX_CONOLE_LINES = 200
         self.errors = []
         label = tk.Label(self, text="This is the PageAdmin")
         label.pack(pady=10)
@@ -16,37 +16,39 @@ class PageAdmin(tk.Frame):
             command=lambda: self.check_directories(),
         )
         self.check_directories_btn.pack()
-        # a read-only text window for displaying debug info
-        self.console = tk.Text(self, height=10, width=80, bg="black", fg="white")
+        self.current_console_length = 0
+        self.configure_console(height=10, width=80)
+
+    def configure_console(self, height, width):
+        self.console = tk.Text(self, height=height, width=width, bg="black", fg="white")
         self.console.config(state="disabled")
         self.console.pack()
-        # set the value of the console to "hello world"
         self.log_message("Initialized application.")
 
     def log_message(self, message):
         self.console.config(state="normal")
         self.console.insert(tk.END, message + '\n')
         self.console.see(tk.END)
+        self.current_console_length += 1
         self.handle_console_buffer()
         self.console.config(state="disabled")
 
     def handle_console_buffer(self):
-        # Count the number of lines in the console
-        num_lines = self.get_console_length()
-        # If the number of lines exceeds the maximum, delete the first line
-        if num_lines > self.MAX_CONOLE_LINES + 1:
+        if self.current_console_length > self.MAX_CONOLE_LINES:
             self.delete_first_console_line()
 
     def clear_console(self):
         self.console.config(state="normal")
         self.console.delete("1.0", tk.END)
         self.console.config(state="disabled")
+        self.current_console_length = 0
 
     def get_console_length(self):
-        return int(self.console.index('end-1c').split('.')[0])
+        return self.current_console_length
 
     def delete_first_console_line(self):
         self.console.delete("1.0", "2.0")
+        self.current_console_length -= 1
 
     def check_directories(self):
         self.log_message("Checking directories...")

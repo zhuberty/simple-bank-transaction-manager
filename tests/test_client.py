@@ -95,11 +95,11 @@ class TestClientAdminPage:
     def test_get_console_length(self):
         page = self.client.frames[Client.PageAdmin]
         page.clear_console()
+        assert page.get_console_length() == 0
+        page.log_message("Test message.")
         assert page.get_console_length() == 1
         page.log_message("Test message.")
         assert page.get_console_length() == 2
-        page.log_message("Test message.")
-        assert page.get_console_length() == 3
 
     @pytest.mark.order(1)
     def test_handle_console_buffer(self):
