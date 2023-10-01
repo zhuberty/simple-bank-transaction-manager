@@ -23,6 +23,8 @@ jobs:
     # Assuming you're using pytest with pytest-cov to generate coverage
     - name: Run tests with coverage
       run: |
+        export DISPLAY=:99
+        Xvfb :99 &
         poetry run pytest --cov=TransactionManager --cov-report=xml:coverage.xml
 
     - name: Coveralls
