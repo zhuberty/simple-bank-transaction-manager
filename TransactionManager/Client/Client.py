@@ -20,17 +20,6 @@ class PageAdmin(tk.Frame):
         self.debug_window = tk.Text(self, height=10, width=80)
 
     def check_directories(self):
-        # relative_paths_to_check = [
-        #     "../user_data",
-        # ]
-        # for relative_path in relative_paths_to_check:
-        #     actual_path = os.path.join(get_cwd(__file__), relative_path)
-        #     if not os.path.exists(actual_path):
-        #         self.errors.append(FileNotFoundError(
-        #             f"Path {actual_path} does not exist. Please create this directory and try again."
-        #         ))
-        # for error in self.errors:
-        #     raise error
         pass
 
 
