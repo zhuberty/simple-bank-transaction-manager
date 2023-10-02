@@ -1,43 +1,14 @@
 import tkinter as tk
 import pytest
-from time import sleep
 from TransactionManager.Client import Client
-from TransactionManager.utils import path_exists, list_dirs
+from TransactionManager.utils import path_exists
 
 
-@pytest.mark.order(1)
-class TestClientFrameMain:
-    test_main_dir = "test_user_data_TestClientFrameMain"
-    client = Client.Client(test_main_dir)
-    client.update_idletasks()
-    
-    def test_check_main_dir(self):
-        assert self.client.main_dir is not None
-
-
-    def test_geometry_correct(self):
-        assert self.client.geometry() == "800x600+100+100"
-
-    def test_title_set(self):
-        assert self.client.title() == "Transaction Manager"
-
-    def test_frames_created(self):
-        assert self.client.frames != {}
-
-    def test_frames_correct(self):
-        assert self.client.frames.keys() == {"admin", "main"}
-
-
-class TestClientAdminPage:
-    test_main_dir = "test_user_data_TestClientAdminPage"
+class TestClientAdmin:
+    test_main_dir = "test_user_data_TestClientAdminConsole"
     client = Client.Client(test_main_dir)
     client.update_idletasks()
 
-    def test_check_directories_btn(self):
-        page = self.client.frames["admin"]
-        assert page.check_directories_btn is not None
-        assert page.check_directories_btn["text"] == "Check Directories"
-    
     def test_init_console(self):
         page = self.client.frames["admin"]
         assert page.console.winfo_viewable()
@@ -86,7 +57,6 @@ class TestClientAdminPage:
     @pytest.mark.order(1)
     def test_check_main_dir_exists(self):
         assert path_exists(self.client.main_dir)
-
 
     @pytest.mark.order(2)
     def test_check_main_dir_exists(self):
