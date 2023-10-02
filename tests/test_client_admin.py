@@ -56,16 +56,11 @@ class TestClientAdmin:
 
     @pytest.mark.order(1)
     def test_check_main_dir_exists(self):
-        assert path_exists(self.client.main_dir)
-
-    @pytest.mark.order(2)
-    def test_check_main_dir_exists(self):
         page = self.client.frames["admin"]
         page.clear_console()
-        page.check_main_dir_exists()
-        assert page.console.get("1.0", "1.end") == "Checking for Main directory..."
-
-    @pytest.mark.order(3)
+        page.check_dir_exists(self.client.main_dir)
+        assert page.console.get("1.0", "1.end") == f"Checking for directory: {self.client.main_dir}"
+    @pytest.mark.order(2)
     def test_create_main_dir(self):
         page = self.client.frames["admin"]
         page.delete_main_dir()
@@ -78,7 +73,7 @@ class TestClientAdmin:
         with pytest.raises(FileExistsError):
             page.create_main_dir()
 
-    @pytest.mark.order(4)
+    @pytest.mark.order(3)
     def test_create_accounts_dir(self):
         page = self.client.frames["admin"]
         page.clear_console()
@@ -90,15 +85,15 @@ class TestClientAdmin:
         with pytest.raises(FileExistsError):
             page.create_accounts_dir()
 
-    @pytest.mark.order(5)
+    @pytest.mark.order(4)
     def test_configure_directories(self):
         page = self.client.frames["admin"]
         page.delete_main_dir()
         page.clear_console()
         page.configure_directories()
         assert page.console.get("1.0", "1.end") == "Configuring directories..."
-        assert page.console.get("2.0", "2.end") == "Checking for Main directory..."
-        assert page.console.get("3.0", "3.end") == "Main directory does not exist."
+        assert page.console.get("2.0", "2.end") == f"Checking for directory: {self.client.main_dir}"
+        assert page.console.get("3.0", "3.end") == "Directory does not exist."
         assert page.console.get("4.0", "4.end") == "Creating Main directory..."
         assert page.console.get("5.0", "5.end") == "Main directory created."
 

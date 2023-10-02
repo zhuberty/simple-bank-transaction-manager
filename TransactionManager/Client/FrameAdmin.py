@@ -1,7 +1,7 @@
 import os
 import shutil
 import tkinter as tk
-from ..utils import get_dirpath, path_exists
+from ..utils import get_dirpath, path_exists, rmdir_recursively
 
 
 class FrameAdmin(tk.Frame):
@@ -88,17 +88,22 @@ class FrameAdmin(tk.Frame):
 
     def configure_directories(self):
         self.log_message("Configuring directories...")
-        if not self.check_main_dir_exists():
+        if not self.check_dir_exists(self.controller.main_dir):
             self.create_main_dir()
 
-    def check_main_dir_exists(self):
-        self.log_message("Checking for Main directory...")
-        main_dir_exists = path_exists(self.controller.main_dir)
-        if not main_dir_exists:
-            self.log_message("Main directory does not exist.")
+        accounts_dir = os.path.join(self.controller.main_dir, "accounts")
+        if not self.check_dir_exists(accounts_dir):
+            self.create_accounts_dir()
+
+    def check_dir_exists(self, path):
+        self.log_message("Checking for directory: " + path)
+        dir_exists = path_exists(path)
+        if not dir_exists:
+            self.log_message("Directory does not exist.")
         else:
-            self.log_message("Main directory exists.")
-        return main_dir_exists
+            self.log_message("Directory exists.")
+        return dir_exists
+
 
     def create_main_dir(self):
         self.log_message("Creating Main directory...")
@@ -107,11 +112,13 @@ class FrameAdmin(tk.Frame):
 
 
     def delete_main_dir(self):
-        if self.check_main_dir_exists():
-            self.log_message("Deleting Main directory...")
-            # remove the main directory recursively
-            shutil.rmtree(self.controller.main_dir)
+        self.log_message("Deleting Main directory...")
+        # remove the main directory recursively
+        if path_exists(self.controller.main_dir):
+            rmdir_recursively(self.controller.main_dir)
             self.log_message("Main directory deleted.")
+        else:
+            self.log_message("Main directory does not exist.")
 
     def create_accounts_dir(self):
         self.log_message("Creating Accounts directory...")

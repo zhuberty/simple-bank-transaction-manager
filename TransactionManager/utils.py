@@ -1,4 +1,6 @@
 import os
+import shutil
+
 
 def get_cwd(file) -> str:
     """
@@ -6,6 +8,7 @@ def get_cwd(file) -> str:
     ex. get_cwd(__file__)
     """
     return os.path.dirname(os.path.realpath(file))
+
 
 def get_dirpath(file, dir) -> str:
     """
@@ -15,8 +18,10 @@ def get_dirpath(file, dir) -> str:
     """
     return os.path.join(get_cwd(file), dir)
 
+
 def path_exists(path):
     return os.path.exists(path)
+
 
 def list_dirs(path) -> list:
     dirs = []
@@ -27,3 +32,7 @@ def list_dirs(path) -> list:
             else:
                 dirs.append(item)
     return dirs
+
+
+def rmdir_recursively(dir_path):
+    shutil.rmtree(dir_path)
