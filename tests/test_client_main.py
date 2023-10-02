@@ -10,7 +10,7 @@ class TestClientFrameMain:
         assert self.client.main_dir is not None
 
     def test_geometry_correct(self):
-        assert self.client.geometry() == "800x600+100+100"
+        assert self.client.geometry().startswith("1200x800")
 
     def test_title_set(self):
         assert self.client.title() == "Transaction Manager"

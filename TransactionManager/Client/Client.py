@@ -12,7 +12,12 @@ class Client(tk.Tk):
         self.accounts_dir = os.path.join(self.main_dir, "accounts")
 
         self.title("Transaction Manager")
-        self.geometry("800x600+100+100")
+        # center the window on the screen
+
+        self.configure_frame()
+
+        self.frames = {}
+        self.showing_frame = None
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -25,6 +30,15 @@ class Client(tk.Tk):
         }
 
         self.show_frame("admin")
+
+    def configure_frame(self):
+        window_width = 1200
+        window_height = 800
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = screen_width / 2 - window_width / 2
+        y = screen_height / 2 - window_height / 2
+        self.geometry("%dx%d+%d+%d" % (window_width, window_height, x, y))
 
     def get_showing_frame(self):
         return self.showing_frame
