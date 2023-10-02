@@ -1,33 +1,45 @@
 import os
 import tkinter as tk
-from ..utils import get_filepath
+from ..utils import get_dirpath, path_exists
 
 
 class PageAdmin(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.controller = controller
         self.MAX_CONOLE_LINES = 200
         self.errors = []
-        label = tk.Label(self, text="This is the PageAdmin")
-        label.pack(pady=10)
+        self.configure_check_dirs_btn()
+        self.current_console_length = 0
+        self.configure_console(height=10, width=80)
+
+
+
+    def configure_check_dirs_btn(self):
         self.check_directories_btn = tk.Button(
             self,
             text="Check Directories",
             command=lambda: self.check_directories(),
         )
-        self.check_directories_btn.pack()
-        self.current_console_length = 0
-        self.configure_console(height=10, width=80)
+        self.check_directories_btn.grid(row=1, column=0, columnspan=2)
 
     def configure_console(self, height, width):
         self.console = tk.Text(self, height=height, width=width, bg="black", fg="white")
         self.console.config(state="disabled")
-        self.console.pack()
+        self.console.grid(row=2, column=0, sticky="nsew")
+        self.configure_console_scrollbar()
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         self.log_message("Initialized application.")
+
+    def configure_console_scrollbar(self):
+        self.console_scrollbar = tk.Scrollbar(self, command=self.console.yview)
+        self.console.config(yscrollcommand=self.console_scrollbar.set)
+        self.console_scrollbar.grid(row=2, column=1, sticky="ns")
 
     def log_message(self, message):
         self.console.config(state="normal")
-        self.console.insert(tk.END, message + '\n')
+        self.console.insert(tk.END, message + "\n")
         self.console.see(tk.END)
         self.current_console_length += 1
         self.handle_console_buffer()
@@ -50,8 +62,31 @@ class PageAdmin(tk.Frame):
         self.console.delete("1.0", "2.0")
         self.current_console_length -= 1
 
-    def check_directories(self):
-        self.log_message("Checking directories...")
+    def configure_directories(self):
+        self.log_message("Configuring directories...")
+        if not self.check_main_dir_exists():
+            self.create_main_dir()
+
+    def check_main_dir_exists(self):
+        self.log_message("Checking for Main directory...")
+        main_dir_exists = path_exists(self.controller.main_dir)
+        if not main_dir_exists:
+            self.log_message("Main directory does not exist.")
+        else:
+            self.log_message("Main directory exists.")
+        return main_dir_exists
+    
+    def create_main_dir(self):
+        if not self.check_main_dir_exists():
+            self.log_message("Creating Main directory...")
+            os.mkdir(self.controller.main_dir)
+            self.log_message("Main directory created.")
+
+    def delete_main_dir(self):
+        if self.check_main_dir_exists():
+            self.log_message("Deleting Main directory...")
+            os.rmdir(self.controller.main_dir)
+            self.log_message("Main directory deleted.")
 
 
 class MainPage(tk.Frame):
@@ -68,11 +103,9 @@ class MainPage(tk.Frame):
 
 
 class Client(tk.Tk):
-    def __init__(self, home_dir):
+    def __init__(self, main_dir):
         super().__init__()
-        self.home_dir = get_filepath(__file__, home_dir)
-        if not os.path.exists(self.home_dir):
-            self.create_home_dir()
+        self.main_dir = get_dirpath(__file__, main_dir)
 
         self.title("Transaction Manager")
         self.geometry("800x600+100+100")
@@ -96,9 +129,3 @@ class Client(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
         frame.is_active = True  # Set is_active to True for the displayed frame
-
-    def create_home_dir(self):
-        os.mkdir(self.home_dir)
-
-    def delete_home_dir(self):
-        os.rmdir(self.home_dir)

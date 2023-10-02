@@ -2,17 +2,17 @@ import tkinter as tk
 import pytest
 from time import sleep
 from TransactionManager.Client import Client
-from TransactionManager.utils import path_exists
+from TransactionManager.utils import path_exists, list_dirs
 
 
 @pytest.mark.order(1)
 class TestClientMainPage:
-    test_home_dir = "test_user_data_TestClientMainPage"
-    client = Client.Client(test_home_dir)
+    test_main_dir = "test_user_data_TestClientMainPage"
+    client = Client.Client(test_main_dir)
     client.update_idletasks()
     
-    def test_check_home_dir(self):
-        assert self.client.home_dir is not None
+    def test_check_main_dir(self):
+        assert self.client.main_dir is not None
 
 
     def test_geometry_correct(self):
@@ -34,19 +34,10 @@ class TestClientMainPage:
             if frame is not self.client.frames[Client.MainPage]:
                 assert not frame.is_active
 
-    @pytest.mark.order(1)
-    def test_check_home_dir_exists(self):
-        assert path_exists(self.client.home_dir)
-    
-    @pytest.mark.order(99)
-    def test_delete_home_dir(self):
-        self.client.delete_home_dir()
-        assert not path_exists(self.client.home_dir)
-
 
 class TestClientAdminPage:
-    test_home_dir = "test_user_data_TestClientAdminPage"
-    client = Client.Client(test_home_dir)
+    test_main_dir = "test_user_data_TestClientAdminPage"
+    client = Client.Client(test_main_dir)
     client.update_idletasks()
 
     def test_show_page(self):
@@ -70,15 +61,6 @@ class TestClientAdminPage:
         # make sure the debug window is read-only
         assert page.console["state"] == "disabled"
 
-    @pytest.mark.order(1)
-    def test_check_home_dir_exists(self):
-        assert path_exists(self.client.home_dir)
-
-    @pytest.mark.order(99)
-    def test_delete_home_dir(self):
-        self.client.delete_home_dir()
-        assert not path_exists(self.client.home_dir)
-
     def test_clear_console(self):
         page = self.client.frames[Client.PageAdmin]
         page.clear_console()
@@ -101,7 +83,6 @@ class TestClientAdminPage:
         page.log_message("Test message.")
         assert page.get_console_length() == 2
 
-    @pytest.mark.order(1)
     def test_handle_console_buffer(self):
         page = self.client.frames[Client.PageAdmin]
         page.MAX_CONOLE_LINES = 2
@@ -112,3 +93,49 @@ class TestClientAdminPage:
         assert page.console.get("1.0", "1.end") == "Test message 2."
         assert page.console.get("2.0", "2.end") == "Test message 3."
         assert page.console.get("3.0", "3.end") == ""
+
+    def test_check_console_scrollbar_height(self):
+        page = self.client.frames[Client.PageAdmin]
+        assert page.console_scrollbar.winfo_height() == page.console.winfo_height()
+
+    @pytest.mark.order(1)
+    def test_check_main_dir_exists(self):
+        assert path_exists(self.client.main_dir)
+
+
+    @pytest.mark.order(1)
+    def test_check_main_dir_exists(self):
+        page = self.client.frames[Client.PageAdmin]
+        page.clear_console()
+        page.check_main_dir_exists()
+        assert "Checking for Main directory..." in page.console.get("1.0", tk.END)
+
+    @pytest.mark.order(2)
+    def test_create_main_dir(self):
+        page = self.client.frames[Client.PageAdmin]
+        page.delete_main_dir()
+        page.clear_console()
+        page.create_main_dir()
+        assert "Creating Main directory..." in page.console.get("1.0", tk.END)
+        assert path_exists(self.client.main_dir)
+        assert "Main directory created." in page.console.get("2.0", tk.END)
+        page.clear_console()
+        page.create_main_dir()
+        assert "Main directory exists." in page.console.get("1.0", tk.END)
+
+    @pytest.mark.order(2)
+    def test_configure_directories(self):
+        page = self.client.frames[Client.PageAdmin]
+        page.clear_console()
+        page.configure_directories()
+        assert "Configuring directories..." in page.console.get("1.0", tk.END)
+
+    @pytest.mark.order(99)
+    def test_delete_main_dir(self):
+        page = self.client.frames[Client.PageAdmin]
+        page.configure_directories()
+        page.clear_console()
+        page.delete_main_dir()
+        assert not path_exists(self.client.main_dir)
+        assert "Deleting Main directory..." in page.console.get("1.0", tk.END)
+        assert "Main directory deleted." in page.console.get("2.0", tk.END)
