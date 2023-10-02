@@ -9,6 +9,7 @@ class Client(tk.Tk):
     def __init__(self, main_dir):
         super().__init__()
         self.main_dir = get_dirpath(__file__, main_dir)
+        self.accounts_dir = os.path.join(self.main_dir, "accounts")
 
         self.title("Transaction Manager")
         self.geometry("800x600+100+100")

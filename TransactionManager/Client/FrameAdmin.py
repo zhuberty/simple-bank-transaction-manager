@@ -1,4 +1,5 @@
 import os
+import shutil
 import tkinter as tk
 from ..utils import get_dirpath, path_exists
 
@@ -108,5 +109,12 @@ class FrameAdmin(tk.Frame):
     def delete_main_dir(self):
         if self.check_main_dir_exists():
             self.log_message("Deleting Main directory...")
-            os.rmdir(self.controller.main_dir)
+            # remove the main directory recursively
+            shutil.rmtree(self.controller.main_dir)
             self.log_message("Main directory deleted.")
+
+    def create_accounts_dir(self):
+        self.log_message("Creating Accounts directory...")
+        os.mkdir(os.path.join(self.controller.main_dir, "accounts"))
+        self.log_message("Accounts directory created.")
+        

@@ -1,4 +1,3 @@
-import tkinter as tk
 from TransactionManager.Client import Client
 
 
