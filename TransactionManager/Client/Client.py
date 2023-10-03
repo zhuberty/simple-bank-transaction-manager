@@ -16,7 +16,7 @@ class Client(tk.Tk):
         self.configure_window()
         self.container = self.configure_container()
         self.configure_frames()
-        self.show_frame("admin")
+        self.show_frame("main")
 
     def configure_window(self):
         window_width = 1200

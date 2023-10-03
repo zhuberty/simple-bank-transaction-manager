@@ -28,10 +28,10 @@ class FrameAdmin(tk.Frame):
     def configure_frame_main_btn(self):
         self.frame_main_btn = tk.Button(
             self,
-            text="Go to Dashboard",
+            text="Home",
             command=lambda: self.controller.show_frame("main"),
         )
-        self.frame_main_btn.grid(row=1, column=2, sticky="ew")
+        self.frame_main_btn.grid(row=1, column=0, sticky="ew")
 
     def configure_check_dirs_btn(self):
         self.check_directories_btn = tk.Button(
@@ -39,16 +39,16 @@ class FrameAdmin(tk.Frame):
             text="Check Directories",
             command=lambda: self.configure_directories(),
         )
-        self.check_directories_btn.grid(row=1, column=0, sticky="ew")
+        self.check_directories_btn.grid(row=1, column=1, sticky="ew")
 
     def configure_clear_console_btn(self):
         self.clear_console_btn = tk.Button(
             self, text="Clear Console", command=lambda: self.clear_console()
         )
-        self.clear_console_btn.grid(row=1, column=1, sticky="ew")
+        self.clear_console_btn.grid(row=1, column=2, sticky="ew")
 
     def configure_console(self, height, width):
-        self.console = tk.Text(self, height=height, width=width, bg="black", fg="white")
+        self.console = tk.Text(self, height=height, width=width, bg="black", fg="white", font=("Courier", 14))
         self.console.config(state="disabled")
         self.console.grid(
             row=2, column=0, columnspan=4, sticky="nsew"  # Change columnspan to 4
