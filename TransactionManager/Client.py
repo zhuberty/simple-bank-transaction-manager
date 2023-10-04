@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 from .FrameAdmin import FrameAdmin
 from .FrameMain import FrameMain
-from ..utils import get_dirpath
+from .utils import get_dirpath
 
 
 class Client(tk.Tk):

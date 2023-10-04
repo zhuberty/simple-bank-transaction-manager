@@ -3,7 +3,7 @@ from TransactionManager.Client import Client
 
 class TestClientFrameMain:
     test_main_dir = "test_user_data_TestClientFrameMain"
-    client = Client.Client(test_main_dir)
+    client = Client(test_main_dir)
     client.update_idletasks()
     page = client.frames["main"]
 

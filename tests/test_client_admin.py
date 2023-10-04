@@ -6,7 +6,7 @@ from TransactionManager.utils import path_exists
 
 class TestClientAdmin:
     test_main_dir = "test_user_data_TestClientAdminConsole"
-    client = Client.Client(test_main_dir)
+    client = Client(test_main_dir)
     client.update_idletasks()
 
     def test_init_console(self):

@@ -1,7 +1,7 @@
 import os
 import shutil
 import tkinter as tk
-from ..utils import get_dirpath, path_exists, rmdir_recursively
+from .utils import get_dirpath, path_exists, rmdir_recursively
 
 
 class FrameAdmin(tk.Frame):
