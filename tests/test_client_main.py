@@ -1,8 +1,8 @@
 import tkinter as tk
 from TransactionManager.Client import Client
 
-class TestClientFrameMain:
-    test_main_dir = "test_user_data_TestClientFrameMain"
+class TestClientClientFrameMain:
+    test_main_dir = "test_user_data_TestClientClientFrameMain"
     client = Client(test_main_dir)
     client.update_idletasks()
     page = client.frames["main"]

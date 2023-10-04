@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog
-from .FrameAdmin import FrameAdmin
+from .ClientFrameAdmin import ClientFrameAdmin
 
 
-class FrameMain(tk.Frame):
+class ClientFrameMain(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller

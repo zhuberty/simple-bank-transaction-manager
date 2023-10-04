@@ -4,7 +4,7 @@ import tkinter as tk
 from .utils import get_dirpath, path_exists, rmdir_recursively
 
 
-class FrameAdmin(tk.Frame):
+class ClientFrameAdmin(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
