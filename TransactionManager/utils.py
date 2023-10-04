@@ -27,10 +27,7 @@ def list_dirs(path) -> list:
     dirs = []
     for item in os.listdir(path):
         if os.path.isdir(os.path.join(path, item)):
-            if item.startswith("__"):
-                continue
-            else:
-                dirs.append(item)
+            dirs.append(item)
     return dirs
 
 
