@@ -1,6 +1,7 @@
 import tkinter as tk
 import pandas as pd
 from tkinter import filedialog
+from tkintertable import TableCanvas, TableModel
 
 
 class ClientFrameMain(tk.Frame):
@@ -8,40 +9,73 @@ class ClientFrameMain(tk.Frame):
         super().__init__(parent)
         self.controller = controller
         self.configure_grid()
+        self.transactions_table_model = TableModel()
         self.configure_admin_btn()
         self.configure_import_file_btn()
+        self.configure_preview_file_btn()
         self.configure_transactions_viewer()
 
     def configure_grid(self):
         self.grid(row=0, column=0, sticky="nsew")
-        self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=0)
+        self.grid_rowconfigure(1, weight=1)
+        self.btn_container = tk.Frame(self)
+        self.btn_container.grid(row=0, column=0, sticky="nsew")
+        self.btn_container.grid_columnconfigure(0, weight=1)
+        self.btn_container.grid_columnconfigure(1, weight=1)
+        self.btn_container.grid_columnconfigure(2, weight=1)
+        self.transactions_container = tk.Frame(self)
+        self.transactions_container.grid(row=1, column=0, sticky="nsew")
+        self.transactions_container.grid_columnconfigure(0, weight=0)
+        self.transactions_container.grid_columnconfigure(1, weight=1)
+        self.transactions_container.grid_columnconfigure(2, weight=0)
 
     def configure_admin_btn(self):
         self.admin_btn = tk.Button(
-            self,
+            self.btn_container,
             text="Go to Admin",
             command=lambda: self.controller.show_frame("admin"),
         )
-        self.admin_btn.grid(row=0, column=0, sticky="new")
+        self.admin_btn.grid(row=0, column=0, sticky="ew")
 
     def configure_import_file_btn(self):
         self.import_file_btn = tk.Button(
-            self,
+            self.btn_container,
             text="Import File",
             command=self.import_file_btn_event,
         )
-        self.import_file_btn.grid(row=0, column=1, sticky="new")
+        self.import_file_btn.grid(row=0, column=1, sticky="ew")
     
-    def configure_transactions_viewer(self):
-        self.transactions_viewer = tk.Text(
-            self,
-            height=10,
-            width=50,
-            state="disabled"
+    def configure_preview_file_btn(self):
+        self.preview_file_btn = tk.Button(
+            self.btn_container,
+            text="Preview File",
+            command=self.preview_file_btn_event,
         )
-        self.transactions_viewer.grid(row=1, column=0, columnspan=2, sticky="nsew")
+        self.preview_file_btn.grid(row=0, column=2, sticky="ew")
+
+    def preview_file_btn_event(self):
+        # select file dialog
+        dialog_result = filedialog.askopenfilename(
+            title="Select CSV File to Preview",
+            filetypes=(("csv files", ".csv"), ("all files", "*.*"))
+        )
+        self.view_transactions_from_file(dialog_result)
+
+    def configure_transactions_viewer(self):
+        # create a table to display transactions
+        self.transactions_viewer = TableCanvas(
+            self.transactions_container,
+            self.transactions_table_model,
+            read_only=False,
+            cellbackgr='white',
+            entrybackgr='white',
+            selectedcolor='yellow',
+            rowselectedcolor='yellow',
+            multipleselectioncolor='yellow',
+            rowheaderwidth=0,
+        )
 
     def import_file_btn_event(self):
         import_file_window = tk.Toplevel(self)
@@ -52,7 +86,6 @@ class ClientFrameMain(tk.Frame):
             text="Select File",
             command=lambda: self.open_file_dialog(import_file_window)
         )
-        select_file_btn.pack(pady=20)
 
     def open_file_dialog(self, import_file_window):
         dialog_result = filedialog.askopenfilename(
@@ -68,27 +101,15 @@ class ClientFrameMain(tk.Frame):
             self.controller.frames["admin"].log_message("Error: File must be a csv file")
         import_file_window.destroy()
 
-    # read transactions csv into a dataframe
-    def read_transactions_csv(self, file_path):
-        try:
-            df = pd.read_csv(file_path)
-            return df
-        except Exception as e:
-            self.controller.frames["admin"].log_message("Error: " + str(e))
-            return None
-    
-    def display_transactions(self, df):
-        self.transactions_viewer.configure(state="normal")
-        self.transactions_viewer.delete("1.0", tk.END)
-        self.transactions_viewer.insert(tk.END, df.to_string())
-        self.transactions_viewer.configure(state="disabled")
+    def is_valid_csv_file(self, filepath):
+        if filepath.endswith(".csv"):
+            return True
+        else:
+            return False
 
-    def display_transactions_from_file(self, file_path):
-        df = self.read_transactions_csv(file_path)
-        if df is not None:
-            self.display_transactions(df)
-
-    def display_transactions_from_df(self, df):
-        if df is not None:
-            self.display_transactions(df)
-
+    def view_transactions_from_file(self, filepath):
+        if self.is_valid_csv_file(filepath):
+            self.transactions_viewer.importCSV(filepath)
+            self.transactions_viewer.redrawTable()
+        else:
+            self.controller.frames["admin"].log_message("Error: File must be a csv file")

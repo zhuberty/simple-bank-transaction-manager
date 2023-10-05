@@ -39,10 +39,9 @@ class TestClientClientFrameMain:
         self.page.open_file_dialog_callback("test_file.txt", import_file_window)
         assert self.client.frames["admin"].console.get("1.0", "1.end") == "Error: File must be a csv file"
 
-    def test_transactions_viewer_exists(self):
-        assert self.page.transactions_viewer.winfo_viewable()
-
-    def test_display_transactions(self):
-        self.page.display_transactions(self.mock_transactions_df)
+    def test_view_transactions_from_file(self):
+        self.page.view_transactions_from_file(self.mock_transactions_filepath)
         self.client.update_idletasks()
-        assert self.page.transactions_viewer.get("1.0", "1.end")
+        # check the TableModel for data
+        assert self.page.transactions_viewer.winfo_viewable()
+        assert self.page.transactions_viewer.model.columnNames == list(self.mock_transactions_df.columns.values)
