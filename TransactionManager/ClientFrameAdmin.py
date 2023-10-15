@@ -1,10 +1,10 @@
 import os
-import shutil
-import tkinter as tk
-from .utils import get_dirpath, path_exists, rmdir_recursively
+from tkinter import *
+from tkinter.ttk import *
+from .utils import path_exists, rmdir_recursively
 
 
-class ClientFrameAdmin(tk.Frame):
+class ClientFrameAdmin(Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -26,7 +26,7 @@ class ClientFrameAdmin(tk.Frame):
         self.grid_columnconfigure(3, weight=0)
 
     def configure_frame_main_btn(self):
-        self.frame_main_btn = tk.Button(
+        self.frame_main_btn = Button(
             self,
             text="Home",
             command=lambda: self.controller.show_frame("main"),
@@ -34,7 +34,7 @@ class ClientFrameAdmin(tk.Frame):
         self.frame_main_btn.grid(row=1, column=0, sticky="ew")
 
     def configure_check_dirs_btn(self):
-        self.check_directories_btn = tk.Button(
+        self.check_directories_btn = Button(
             self,
             text="Check Directories",
             command=lambda: self.configure_directories(),
@@ -42,13 +42,13 @@ class ClientFrameAdmin(tk.Frame):
         self.check_directories_btn.grid(row=1, column=1, sticky="ew")
 
     def configure_clear_console_btn(self):
-        self.clear_console_btn = tk.Button(
+        self.clear_console_btn = Button(
             self, text="Clear Console", command=lambda: self.clear_console()
         )
         self.clear_console_btn.grid(row=1, column=2, sticky="ew")
 
     def configure_console(self, height, width):
-        self.console = tk.Text(self, height=height, width=width, bg="black", fg="white", font=("Courier", 14))
+        self.console = Text(self, height=height, width=width, bg="black", fg="white", font=("Courier", 14))
         self.console.config(state="disabled")
         self.console.grid(
             row=2, column=0, columnspan=4, sticky="nsew"  # Change columnspan to 4
@@ -57,14 +57,14 @@ class ClientFrameAdmin(tk.Frame):
         self.log_message("Initialized application.")
 
     def configure_console_scrollbar(self):
-        self.console_scrollbar = tk.Scrollbar(self, command=self.console.yview)
+        self.console_scrollbar = Scrollbar(self, command=self.console.yview)
         self.console.config(yscrollcommand=self.console_scrollbar.set)
         self.console_scrollbar.grid(row=2, column=3, sticky="nse")  # Change column to 3
 
     def log_message(self, message):
         self.console.config(state="normal")
-        self.console.insert(tk.END, message + "\n")
-        self.console.see(tk.END)
+        self.console.insert(END, message + "\n")
+        self.console.see(END)
         self.current_console_length += 1
         self.handle_console_buffer()
         self.console.config(state="disabled")
@@ -75,7 +75,7 @@ class ClientFrameAdmin(tk.Frame):
 
     def clear_console(self):
         self.console.config(state="normal")
-        self.console.delete("1.0", tk.END)
+        self.console.delete("1.0", END)
         self.console.config(state="disabled")
         self.current_console_length = 0
 

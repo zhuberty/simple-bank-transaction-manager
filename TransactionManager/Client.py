@@ -1,11 +1,12 @@
 import os
-import tkinter as tk
+from tkinter import *
+from tkinter.ttk import *
 from .ClientFrameAdmin import ClientFrameAdmin
 from .ClientFrameMain import ClientFrameMain
 from .utils import get_dirpath
 
 
-class Client(tk.Tk):
+class Client(Tk):
     def __init__(self, main_dir):
         super().__init__()
         self.main_dir = get_dirpath(__file__, main_dir)
@@ -29,7 +30,7 @@ class Client(tk.Tk):
         self.geometry("%dx%d+%d+%d" % (window_width, window_height, x, y))
 
     def configure_container(self):
-        container = tk.Frame(self)
+        container = Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
@@ -46,7 +47,7 @@ class Client(tk.Tk):
     def get_showing_frame(self):
         return self.showing_frame
     
-    def get_frame(self, frame_name: str) -> tk.Frame:
+    def get_frame(self, frame_name: str) -> Frame:
         return self.frames[frame_name]
 
     def show_frame(self, frame_name: str):

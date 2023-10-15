@@ -1,4 +1,5 @@
-import tkinter as tk
+from tkinter import *
+from tkinter.ttk import *
 import pytest
 from TransactionManager.Client import Client
 from TransactionManager.utils import path_exists
@@ -27,7 +28,7 @@ class TestClientAdmin:
         page = self.client.frames["admin"]
         page.clear_console()
         page.log_message("Test message.")
-        assert "Test message." in page.console.get("1.0", tk.END)
+        assert "Test message." in page.console.get("1.0", END)
 
     def test_get_console_length(self):
         page = self.client.frames["admin"]
@@ -103,5 +104,5 @@ class TestClientAdmin:
         page.clear_console()
         page.delete_main_dir()
         assert not path_exists(self.client.main_dir)
-        assert "Deleting Main directory..." in page.console.get("1.0", tk.END)
-        assert "Main directory deleted." in page.console.get("2.0", tk.END)
+        assert "Deleting Main directory..." in page.console.get("1.0", END)
+        assert "Main directory deleted." in page.console.get("2.0", END)

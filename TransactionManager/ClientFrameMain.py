@@ -1,15 +1,13 @@
-import tkinter as tk
-import pandas as pd
+from tkinter import *
+from tkinter.ttk import *
 from tkinter import filedialog
-from tkintertable import TableCanvas, TableModel
 
 
-class ClientFrameMain(tk.Frame):
+class ClientFrameMain(Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
         self.configure_grid()
-        self.transactions_table_model = TableModel()
         self.configure_admin_btn()
         self.configure_import_file_btn()
         self.configure_preview_file_btn()
@@ -20,19 +18,19 @@ class ClientFrameMain(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
-        self.btn_container = tk.Frame(self)
+        self.btn_container = Frame(self)
         self.btn_container.grid(row=0, column=0, sticky="nsew")
         self.btn_container.grid_columnconfigure(0, weight=1)
         self.btn_container.grid_columnconfigure(1, weight=1)
         self.btn_container.grid_columnconfigure(2, weight=1)
-        self.transactions_container = tk.Frame(self)
+        self.transactions_container = Frame(self)
         self.transactions_container.grid(row=1, column=0, sticky="nsew")
         self.transactions_container.grid_columnconfigure(0, weight=0)
         self.transactions_container.grid_columnconfigure(1, weight=1)
         self.transactions_container.grid_columnconfigure(2, weight=0)
 
     def configure_admin_btn(self):
-        self.admin_btn = tk.Button(
+        self.admin_btn = Button(
             self.btn_container,
             text="Go to Admin",
             command=lambda: self.controller.show_frame("admin"),
@@ -40,7 +38,7 @@ class ClientFrameMain(tk.Frame):
         self.admin_btn.grid(row=0, column=0, sticky="ew")
 
     def configure_import_file_btn(self):
-        self.import_file_btn = tk.Button(
+        self.import_file_btn = Button(
             self.btn_container,
             text="Import File",
             command=self.import_file_btn_event,
@@ -48,7 +46,7 @@ class ClientFrameMain(tk.Frame):
         self.import_file_btn.grid(row=0, column=1, sticky="ew")
     
     def configure_preview_file_btn(self):
-        self.preview_file_btn = tk.Button(
+        self.preview_file_btn = Button(
             self.btn_container,
             text="Preview File",
             command=self.preview_file_btn_event,
@@ -65,23 +63,13 @@ class ClientFrameMain(tk.Frame):
 
     def configure_transactions_viewer(self):
         # create a table to display transactions
-        self.transactions_viewer = TableCanvas(
-            self.transactions_container,
-            self.transactions_table_model,
-            read_only=False,
-            cellbackgr='white',
-            entrybackgr='white',
-            selectedcolor='yellow',
-            rowselectedcolor='yellow',
-            multipleselectioncolor='yellow',
-            rowheaderwidth=0,
-        )
+        self.transactions_viewer = None
 
     def import_file_btn_event(self):
-        import_file_window = tk.Toplevel(self)
+        import_file_window = Toplevel(self)
         import_file_window.title("Import File")
 
-        select_file_btn = tk.Button(
+        select_file_btn = Button(
             import_file_window,
             text="Select File",
             command=lambda: self.open_file_dialog(import_file_window)
@@ -109,7 +97,6 @@ class ClientFrameMain(tk.Frame):
 
     def view_transactions_from_file(self, filepath):
         if self.is_valid_csv_file(filepath):
-            self.transactions_viewer.importCSV(filepath)
-            self.transactions_viewer.redrawTable()
+            pass
         else:
             self.controller.frames["admin"].log_message("Error: File must be a csv file")
