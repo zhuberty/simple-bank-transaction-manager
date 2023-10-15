@@ -23,33 +23,41 @@ class ClientTransactionViewer(Frame):
         # Create a treeview for the table
         self.transactions_viewer = Treeview(self.transactions_container)
         self.transactions_viewer.grid(row=0, column=1, sticky="nsew")
-        self.transactions_viewer["columns"] = ("Account", "ChkRef", "Debit", "Credit", "Date", "Description", "Tags")
+        
+        # Configurations
+        self.configure_columns()
+        self.configure_scrollbar()
+        
+        self.transactions_viewer.bind("<Double-1>", self.on_item_double_click)
 
-        # Disabling the default column and setting the widths and headings for our columns
+
+    def configure_columns(self):
+        # Dictionary to store column configurations
+        column_config = {
+            "Account": {"width": 150, "anchor": W, "heading": "Account"},
+            "ChkRef": {"width": 100, "anchor": W, "heading": "ChkRef"},
+            "Debit": {"width": 100, "anchor": W, "heading": "Debit"},
+            "Credit": {"width": 100, "anchor": W, "heading": "Credit"},
+            "Date": {"width": 100, "anchor": W, "heading": "Date"},
+            "Description": {"width": 250, "anchor": W, "heading": "Description"},
+            "Tags": {"width": 200, "anchor": W, "heading": "Tags"}
+        }
+
+        self.transactions_viewer["columns"] = tuple(column_config.keys())
+
+        # Disabling the default column
         self.transactions_viewer.column("#0", width=0, stretch=NO)
-        self.transactions_viewer.column("Account", anchor=W, width=150)
-        self.transactions_viewer.column("ChkRef", anchor=W, width=100)
-        self.transactions_viewer.column("Debit", anchor=W, width=100)
-        self.transactions_viewer.column("Credit", anchor=W, width=100)
-        self.transactions_viewer.column("Date", anchor=W, width=100)
-        self.transactions_viewer.column("Description", anchor=W, width=250)
-        self.transactions_viewer.column("Tags", anchor=W, width=200)
 
-        self.transactions_viewer.heading("#0", text="", anchor=W)
-        self.transactions_viewer.heading("Account", text="Account", anchor=W)
-        self.transactions_viewer.heading("ChkRef", text="ChkRef", anchor=W)
-        self.transactions_viewer.heading("Debit", text="Debit", anchor=W)
-        self.transactions_viewer.heading("Credit", text="Credit", anchor=W)
-        self.transactions_viewer.heading("Date", text="Date", anchor=W)
-        self.transactions_viewer.heading("Description", text="Description", anchor=W)
-        self.transactions_viewer.heading("Tags", text="Tags", anchor=W)
+        for col, conf in column_config.items():
+            self.transactions_viewer.column(col, width=conf["width"], anchor=conf["anchor"], stretch=conf.get("stretch", YES))
+            self.transactions_viewer.heading(col, text=conf["heading"], anchor=conf["anchor"])
 
+
+    def configure_scrollbar(self):
         # Add vertical scrollbar
         self.scrollbar = Scrollbar(self.transactions_container, orient="vertical", command=self.transactions_viewer.yview)
         self.transactions_viewer.configure(yscrollcommand=self.scrollbar.set)
         self.scrollbar.grid(row=0, column=2, sticky="ns")
-
-        self.transactions_viewer.bind("<Double-1>", self.on_item_double_click)
 
     def on_item_double_click(self, event):
         row_id = self.transactions_viewer.identify_row(event.y)
