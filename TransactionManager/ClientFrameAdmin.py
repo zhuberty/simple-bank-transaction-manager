@@ -48,7 +48,7 @@ class ClientFrameAdmin(Frame):
         self.clear_console_btn.grid(row=1, column=2, sticky="ew")
 
     def configure_console(self, height, width):
-        self.console = Text(self, height=height, width=width, bg="black", fg="white", font=("Courier", 14))
+        self.console = Text(self, height=height, width=width, background="black", foreground="white", font=("Courier", 14))
         self.console.config(state="disabled")
         self.console.grid(
             row=2, column=0, columnspan=4, sticky="nsew"  # Change columnspan to 4

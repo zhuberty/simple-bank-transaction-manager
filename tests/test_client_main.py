@@ -1,4 +1,5 @@
 import os
+from time import sleep
 from tkinter import *
 from tkinter.ttk import *
 import pandas as pd
@@ -33,4 +34,3 @@ class TestClientClientFrameMain:
     def test_view_transactions_from_file(self):
         self.page.view_transactions_from_file(self.mock_transactions_filepath)
         self.client.update_idletasks()
-        pass
