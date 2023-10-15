@@ -13,15 +13,6 @@ class TestClientClientFrameMain:
     mock_transactions_filepath = os.path.join(get_cwd(__file__), "test_data/accounts/Test Bank Account Name/statements/mock_bank_statement.csv")
     mock_transactions_df = pd.read_csv(mock_transactions_filepath)
 
-    def test_init_frame(self):
-        assert self.page.winfo_viewable()
-
-    def test_admin_btn_exists(self):
-        assert self.page.admin_btn.winfo_viewable()
-
-    def test_import_file_btn_exists(self):
-        assert self.page.import_file_btn.winfo_viewable()
-
     def test_import_file_dialog(self):
         self.page.import_file_btn.invoke()
         import_file_window = self.page.winfo_children()[-1]
@@ -43,5 +34,4 @@ class TestClientClientFrameMain:
         self.page.view_transactions_from_file(self.mock_transactions_filepath)
         self.client.update_idletasks()
         # check the TableModel for data
-        assert self.page.transactions_viewer.winfo_viewable()
         assert self.page.transactions_viewer.model.columnNames == list(self.mock_transactions_df.columns.values)

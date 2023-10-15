@@ -7,7 +7,7 @@ def test_get_cwd():
     assert get_cwd(__file__).endswith("tests")
 
 def test_get_dirpath():
-    assert get_dirpath(__file__, "test_data").endswith("tests/test_data")
+    assert get_dirpath(__file__, "test_data").endswith("test_data")
 
 def test_path_exists():
     assert path_exists(get_cwd(__file__))

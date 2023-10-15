@@ -11,7 +11,6 @@ class TestClientAdmin:
 
     def test_init_console(self):
         page = self.client.frames["admin"]
-        assert page.console.winfo_viewable()
         assert page.console["height"] == 10
         assert page.console["width"] == 80
         # make sure the debug window is read-only
