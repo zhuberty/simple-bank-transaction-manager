@@ -44,11 +44,21 @@ class ClientTransactionViewer(Frame):
         self.transactions_viewer.heading("Description", text="Description", anchor=W)
         self.transactions_viewer.heading("Tags", text="Tags", anchor=W)
 
+        # Add vertical scrollbar
+        self.scrollbar = Scrollbar(self.transactions_container, orient="vertical", command=self.transactions_viewer.yview)
+        self.transactions_viewer.configure(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.grid(row=0, column=2, sticky="ns")
+
         self.transactions_viewer.bind("<Double-1>", self.on_item_double_click)
 
     def on_item_double_click(self, event):
         row_id = self.transactions_viewer.identify_row(event.y)
         col_id = self.transactions_viewer.identify_column(event.x)
+        
+        # Check if both row_id and col_id are valid (i.e., non-empty strings)
+        if not row_id or not col_id:
+            return
+
         # Only allow editing for the "Tags" column
         if col_id == "#7":  # Tags column
             x, y, width, height = self.transactions_viewer.bbox(row_id, col_id)
@@ -59,6 +69,7 @@ class ClientTransactionViewer(Frame):
             self.editor.focus_set()
             self.editor.bind("<Return>", lambda e: self.update_tags(row_id))
             self.editor.bind("<FocusOut>", lambda e: self.update_tags(row_id))
+
 
     def update_tags(self, row_id):
         updated_value = self.editor.get()
