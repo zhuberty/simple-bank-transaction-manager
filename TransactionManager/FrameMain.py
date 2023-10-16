@@ -77,9 +77,9 @@ class FrameMain(Frame):
 
     def open_file_dialog_callback(self, dialog_result, import_file_window):
         if dialog_result.endswith(".csv"):
-            self.controller.frames["admin"].log_message("Importing file: " + dialog_result)
+            self.controller.admin_frame.log_message("Importing file: " + dialog_result)
         else:
-            self.controller.frames["admin"].log_message("Error: File must be a csv file")
+            self.controller.admin_frame.log_message("Error: File must be a csv file")
         import_file_window.destroy()
 
     def is_valid_csv_file(self, filepath):

@@ -13,11 +13,11 @@ class Client(Tk):
         self.accounts_dir = os.path.join(self.main_dir, "accounts")
 
         self.title("Transaction Manager")
-        # center the window on the screen
         self.configure_window()
         self.container = self.configure_container()
         self.configure_frames()
         self.show_frame("main")
+
 
     def configure_window(self):
         window_width = 1200
@@ -37,18 +37,20 @@ class Client(Tk):
         return container
 
     def configure_frames(self):
-        self.frames = {}
         self.showing_frame = None
-        self.frames = {
-            "admin": FrameAdmin(self.container, self),
-            "main": FrameMain(self.container, self),
-        }
+        self.admin_frame = FrameAdmin(self.container, self)
+        self.main_frame = FrameMain(self.container, self)
 
     def get_showing_frame(self):
         return self.showing_frame
-    
+
     def get_frame(self, frame_name: str) -> Frame:
-        return self.frames[frame_name]
+        if frame_name == "admin":
+            return self.admin_frame
+        elif frame_name == "main":
+            return self.main_frame
+        else:
+            raise KeyError(f"No frame named {frame_name}")
 
     def show_frame(self, frame_name: str):
         self.showing_frame = self.get_frame(frame_name)

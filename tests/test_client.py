@@ -16,13 +16,11 @@ class TestClient:
         assert self.client.title() == "Transaction Manager"
 
     def test_frames_created(self):
-        assert self.client.frames != {}
-
-    def test_frames_correct(self):
-        assert self.client.frames.keys() == {"admin", "main"}
+        assert self.client.admin_frame is not None
+        assert self.client.main_frame is not None
 
     def test_show_frame(self):
         self.client.show_frame("admin")
-        assert self.client.get_showing_frame() == self.client.frames["admin"]
+        assert self.client.get_showing_frame() == self.client.admin_frame
         self.client.show_frame("main")
-        assert self.client.get_showing_frame() == self.client.frames["main"]
+        assert self.client.get_showing_frame() == self.client.main_frame
