@@ -1,8 +1,8 @@
 import os
 from tkinter import *
 from tkinter.ttk import *
-from .ClientFrameAdmin import ClientFrameAdmin
-from .ClientFrameMain import ClientFrameMain
+from .FrameAdmin import FrameAdmin
+from .FrameMain import FrameMain
 from .utils import get_dirpath
 
 
@@ -40,8 +40,8 @@ class Client(Tk):
         self.frames = {}
         self.showing_frame = None
         self.frames = {
-            "admin": ClientFrameAdmin(self.container, self),
-            "main": ClientFrameMain(self.container, self),
+            "admin": FrameAdmin(self.container, self),
+            "main": FrameMain(self.container, self),
         }
 
     def get_showing_frame(self):

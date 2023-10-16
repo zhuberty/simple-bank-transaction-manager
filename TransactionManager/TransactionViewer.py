@@ -4,7 +4,7 @@ from tkinter.ttk import *
 import pandas as pd
 
 
-class ClientTransactionViewer(Frame):
+class TransactionViewer(Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.configure_grid()

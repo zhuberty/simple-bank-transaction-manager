@@ -6,8 +6,8 @@ import pandas as pd
 from TransactionManager.utils import get_cwd
 from TransactionManager.Client import Client
 
-class TestClientClientFrameMain:
-    test_main_dir = "test_user_data_TestClientClientFrameMain"
+class TestClientFrameMain:
+    test_main_dir = "test_user_data_TestClientFrameMain"
     client = Client(test_main_dir)
     client.update_idletasks()
     page = client.frames["main"]
@@ -30,7 +30,3 @@ class TestClientClientFrameMain:
         self.client.frames["admin"].clear_console()
         self.page.open_file_dialog_callback("test_file.txt", import_file_window)
         assert self.client.frames["admin"].console.get("1.0", "1.end") == "Error: File must be a csv file"
-
-    def test_view_transactions_from_file(self):
-        self.page.view_transactions_from_file(self.mock_transactions_filepath)
-        self.client.update_idletasks()

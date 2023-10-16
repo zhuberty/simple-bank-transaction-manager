@@ -1,10 +1,10 @@
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import filedialog
-from .ClientTransactionViewer import ClientTransactionViewer
+from .TransactionViewer import TransactionViewer
 
 
-class ClientFrameMain(Frame):
+class FrameMain(Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -14,7 +14,7 @@ class ClientFrameMain(Frame):
         self.configure_preview_file_btn()
 
         # Initialize the transaction viewer
-        self.transaction_viewer_frame = ClientTransactionViewer(self)
+        self.transaction_viewer_frame = TransactionViewer(self)
 
     def configure_grid(self):
         self.grid(row=0, column=0, sticky="nsew")
