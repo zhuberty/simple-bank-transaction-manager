@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter import filedialog
 from .TransactionViewer import TransactionViewer
+from .FileHelper import FileHelper
 
 
 class FrameMain(Frame):
@@ -12,7 +13,6 @@ class FrameMain(Frame):
         self.configure_admin_btn()
         self.configure_import_file_btn()
 
-        # Initialize the transaction viewer
         self.transaction_viewer_frame = TransactionViewer(self)
 
     def configure_grid(self):
@@ -42,28 +42,16 @@ class FrameMain(Frame):
         self.import_file_btn.grid(row=0, column=1, sticky="ew")
 
     def import_file_btn_event(self):
-        dialog_result = filedialog.askopenfilename(
-            title="Select CSV File to Import",
-            filetypes=(("csv files", ".csv"), ("all files", "*.*"))
-        )
+        dialog_result = FileHelper.open_file_dialog("Select CSV File to Import")
         self.transaction_viewer_frame.view_transactions_from_file(dialog_result)
 
     def open_file_dialog(self, import_file_window):
-        dialog_result = filedialog.askopenfilename(
-            title="Select CSV File to Import",
-            filetypes=(("csv files", ".csv"), ("all files", "*.*"))
-        )
+        dialog_result = FileHelper.open_file_dialog("Select CSV File to Import")
         self.open_file_dialog_callback(dialog_result, import_file_window)
 
     def open_file_dialog_callback(self, dialog_result, import_file_window):
-        if dialog_result.endswith(".csv"):
+        if FileHelper.is_valid_csv_file(dialog_result):
             self.controller.admin_frame.log_message("Importing file: " + dialog_result)
         else:
             self.controller.admin_frame.log_message("Error: File must be a csv file")
         import_file_window.destroy()
-
-    def is_valid_csv_file(self, filepath):
-        if filepath.endswith(".csv"):
-            return True
-        else:
-            return False

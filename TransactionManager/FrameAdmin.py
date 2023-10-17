@@ -48,7 +48,7 @@ class FrameAdmin(Frame):
         self.clear_console_btn.grid(row=1, column=2, sticky="ew")
 
     def configure_console(self, height, width):
-        self.console = Text(self, height=height, width=width, background="black", foreground="white", font=("Courier", 14))
+        self.console = Text(self, height=height, width=width, background="black", foreground="white", font=("Courier", 12))
         self.console.config(state="disabled")
         self.console.grid(
             row=2, column=0, columnspan=4, sticky="nsew"  # Change columnspan to 4
@@ -94,6 +94,11 @@ class FrameAdmin(Frame):
         accounts_dir = os.path.join(self.controller.main_dir, "accounts")
         if not self.check_dir_exists(accounts_dir):
             self.create_accounts_dir()
+
+        statements_dir = os.path.join(self.controller.main_dir, "accounts", "statements")
+        if not self.check_dir_exists(statements_dir):
+            os.mkdir(statements_dir)
+            self.log_message("Statements directory created.")
 
     def check_dir_exists(self, path):
         self.log_message("Checking for directory: " + path)
