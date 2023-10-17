@@ -11,7 +11,6 @@ class FrameMain(Frame):
         self.configure_grid()
         self.configure_admin_btn()
         self.configure_import_file_btn()
-        self.configure_preview_file_btn()
 
         # Initialize the transaction viewer
         self.transaction_viewer_frame = TransactionViewer(self)
@@ -25,7 +24,6 @@ class FrameMain(Frame):
         self.btn_container.grid(row=0, column=0, sticky="nsew")
         self.btn_container.grid_columnconfigure(0, weight=1)
         self.btn_container.grid_columnconfigure(1, weight=1)
-        self.btn_container.grid_columnconfigure(2, weight=1)
 
     def configure_admin_btn(self):
         self.admin_btn = Button(
@@ -34,7 +32,7 @@ class FrameMain(Frame):
             command=lambda: self.controller.show_frame("admin"),
         )
         self.admin_btn.grid(row=0, column=0, sticky="ew")
-
+    
     def configure_import_file_btn(self):
         self.import_file_btn = Button(
             self.btn_container,
@@ -42,31 +40,13 @@ class FrameMain(Frame):
             command=self.import_file_btn_event,
         )
         self.import_file_btn.grid(row=0, column=1, sticky="ew")
-    
-    def configure_preview_file_btn(self):
-        self.preview_file_btn = Button(
-            self.btn_container,
-            text="Preview File",
-            command=self.preview_file_btn_event,
-        )
-        self.preview_file_btn.grid(row=0, column=2, sticky="ew")
 
-    def preview_file_btn_event(self):
+    def import_file_btn_event(self):
         dialog_result = filedialog.askopenfilename(
-            title="Select CSV File to Preview",
+            title="Select CSV File to Import",
             filetypes=(("csv files", ".csv"), ("all files", "*.*"))
         )
         self.transaction_viewer_frame.view_transactions_from_file(dialog_result)
-
-    def import_file_btn_event(self):
-        import_file_window = Toplevel(self)
-        import_file_window.title("Import File")
-
-        select_file_btn = Button(
-            import_file_window,
-            text="Select File",
-            command=lambda: self.open_file_dialog(import_file_window)
-        )
 
     def open_file_dialog(self, import_file_window):
         dialog_result = filedialog.askopenfilename(
