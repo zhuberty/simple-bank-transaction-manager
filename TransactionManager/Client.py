@@ -11,6 +11,7 @@ class Client(Tk):
         super().__init__()
         self.main_dir = get_dirpath(__file__, main_dir)
         self.accounts_dir = os.path.join(self.main_dir, "accounts")
+        self.statements_dir = os.path.join(self.accounts_dir, "statements")
 
         self.title("Transaction Manager")
         self.configure_window()
