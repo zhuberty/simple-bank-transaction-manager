@@ -1,4 +1,3 @@
-# Console.py
 from tkinter import Text, END
 
 class Console:

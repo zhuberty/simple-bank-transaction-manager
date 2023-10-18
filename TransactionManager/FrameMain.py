@@ -29,7 +29,7 @@ class FrameMain(Frame):
         self.admin_btn = Button(
             self.btn_container,
             text="Go to Admin",
-            command=lambda: self.controller.show_frame("admin"),
+            command=lambda: self.controller.admin_frame.tkraise(),
         )
         self.admin_btn.grid(row=0, column=0, sticky="ew")
     

@@ -3,31 +3,29 @@ from tkinter import *
 from tkinter.ttk import *
 from .FrameAdmin import FrameAdmin
 from .FrameMain import FrameMain
-from .utils import get_dirpath
+from .FileHelper import FileHelper
 
 
 class Client(Tk):
     def __init__(self, main_dir):
         super().__init__()
-        self.main_dir = get_dirpath(__file__, main_dir)
-        self.accounts_dir = os.path.join(self.main_dir, "accounts")
-        self.statements_dir = os.path.join(self.accounts_dir, "statements")
+        self.main_dir = FileHelper.get_dirpath(__file__, main_dir)
+        self.statements_dir = os.path.join(self.main_dir, "accounts", "statements")
+        self.create_app_directories()
 
-        self.title("Transaction Manager")
+        self.title("Simple Bank Transaction Manager")
         self.configure_window()
         self.container = self.configure_container()
-        self.configure_frames()
-        self.show_frame("main")
-
+        self.admin_frame = FrameAdmin(self.container, self)
+        self.main_frame = FrameMain(self.container, self)
+        self.main_frame.tkraise()
 
     def configure_window(self):
         window_width = 1200
         window_height = 800
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
         # center the window on the screen
-        x = screen_width / 2 - window_width / 2
-        y = screen_height / 2 - window_height / 2
+        x = self.winfo_screenwidth() / 2 - window_width / 2
+        y = self.winfo_screenheight() / 2 - window_height / 2
         self.geometry("%dx%d+%d+%d" % (window_width, window_height, x, y))
 
     def configure_container(self):
@@ -37,22 +35,5 @@ class Client(Tk):
         container.grid_columnconfigure(0, weight=1)
         return container
 
-    def configure_frames(self):
-        self.showing_frame = None
-        self.admin_frame = FrameAdmin(self.container, self)
-        self.main_frame = FrameMain(self.container, self)
-
-    def get_showing_frame(self):
-        return self.showing_frame
-
-    def get_frame(self, frame_name: str) -> Frame:
-        if frame_name == "admin":
-            return self.admin_frame
-        elif frame_name == "main":
-            return self.main_frame
-        else:
-            raise KeyError(f"No frame named {frame_name}")
-
-    def show_frame(self, frame_name: str):
-        self.showing_frame = self.get_frame(frame_name)
-        self.showing_frame.tkraise()
+    def create_app_directories(self):
+        FileHelper.create_dirs(self.statements_dir)
