@@ -10,6 +10,7 @@ class TestClientAdmin:
     client = Client(test_main_dir)
     client.update_idletasks()
     page = client.admin_frame
+    log = client.admin_frame.console.log_message
 
     def test_init_console(self):
         page = self.client.admin_frame
@@ -21,31 +22,31 @@ class TestClientAdmin:
         page = self.client.admin_frame
         page.console.clear_console()
         assert page.console.widget.get("1.0", "1.end") == ""
-        page.console.log_message("Test message.")
+        self.log("Test message.")
         assert page.console.widget.get("1.0", "1.end") == "Test message."
 
     def test_log_message(self):
         page = self.client.admin_frame
         page.console.clear_console()
-        page.console.log_message("Test message.")
+        self.log("Test message.")
         assert "Test message." in page.console.widget.get("1.0", END)
 
     def test_get_console_length(self):
         page = self.client.admin_frame
         page.console.clear_console()
         assert page.console.get_console_length() == 0
-        page.console.log_message("Test message.")
+        self.log("Test message.")
         assert page.console.get_console_length() == 1
-        page.console.log_message("Test message.")
+        self.log("Test message.")
         assert page.console.get_console_length() == 2
 
     def test_handle_console_buffer(self):
         page = self.client.admin_frame
         page.console.MAX_CONSOLE_LINES = 2
         page.console.clear_console()
-        page.console.log_message("Test message 1.")
-        page.console.log_message("Test message 2.")
-        page.console.log_message("Test message 3.")
+        self.log("Test message 1.")
+        self.log("Test message 2.")
+        self.log("Test message 3.")
         assert page.console.widget.get("1.0", "1.end") == "Test message 2."
         assert page.console.widget.get("2.0", "2.end") == "Test message 3."
         assert page.console.widget.get("3.0", "3.end") == ""

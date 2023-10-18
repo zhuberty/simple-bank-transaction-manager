@@ -9,6 +9,7 @@ class FrameAdmin(Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
+        self.log = self.controller.admin_frame.console.log_message
         self.MAX_CONOLE_LINES = 200
         self.errors = []
         self.current_console_length = 0
@@ -18,7 +19,7 @@ class FrameAdmin(Frame):
         self.console = Console(self)
         self.console.grid(row=2, column=0, columnspan=4, sticky="nsew")
         self.configure_console_scrollbar()
-        self.console.log_message("Initialized application.")
+        self.log("Initialized application.")
         
         self.clear_console_btn = WidgetHelper.create_button(self, "Clear Console", lambda: self.console.clear_console(), 1, 1, "ew")
         self.frame_main_btn = WidgetHelper.create_button(self, "Home", lambda: self.controller.main_frame.tkraise(), 1, 0, "ew")
