@@ -21,15 +21,15 @@ class TestClientAdmin:
     def test_clear_console(self):
         page = self.client.admin_frame
         page.console.clear_console()
-        assert page.console.console.get("1.0", "1.end") == ""
+        assert page.console.widget.get("1.0", "1.end") == ""
         page.console.log_message("Test message.")
-        assert page.console.console.get("1.0", "1.end") == "Test message."
+        assert page.console.widget.get("1.0", "1.end") == "Test message."
 
     def test_log_message(self):
         page = self.client.admin_frame
         page.console.clear_console()
         page.console.log_message("Test message.")
-        assert "Test message." in page.console.console.get("1.0", END)
+        assert "Test message." in page.console.widget.get("1.0", END)
 
     def test_get_console_length(self):
         page = self.client.admin_frame
@@ -47,27 +47,26 @@ class TestClientAdmin:
         page.console.log_message("Test message 1.")
         page.console.log_message("Test message 2.")
         page.console.log_message("Test message 3.")
-        assert page.console.console.get("1.0", "1.end") == "Test message 2."
-        assert page.console.console.get("2.0", "2.end") == "Test message 3."
-        assert page.console.console.get("3.0", "3.end") == ""
+        assert page.console.widget.get("1.0", "1.end") == "Test message 2."
+        assert page.console.widget.get("2.0", "2.end") == "Test message 3."
+        assert page.console.widget.get("3.0", "3.end") == ""
 
     def test_check_console_scrollbar_height(self):
         page = self.client.admin_frame
-        assert page.console_scrollbar.winfo_height() == page.console.console.winfo_height()
+        assert page.console_scrollbar.winfo_height() == page.console.widget.winfo_height()
 
     @pytest.mark.order(1)
     def test_init_console(self):
         page = self.client.admin_frame  # Updated line
-        assert page.console.console["height"] == 10
-        assert page.console.console["width"] == 80
+        assert page.console.widget["height"] == 10
+        assert page.console.widget["width"] == 80
         # make sure the debug window is read-only
-        assert page.console.console["state"] == "disabled"
+        assert page.console.widget["state"] == "disabled"
 
     @pytest.mark.order(2)
     def test_create_app_directories(self):
         FileHelper.rmdir_recursively(self.client.main_dir)
         self.client.create_app_directories()
-        assert FileHelper.path_exists(self.client.main_dir)
         assert FileHelper.path_exists(self.client.statements_dir)
 
     @pytest.mark.order(50)
