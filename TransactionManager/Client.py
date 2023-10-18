@@ -11,7 +11,6 @@ class Client(Tk):
         super().__init__()
         self.main_dir = FileHelper.get_dirpath(__file__, main_dir)
         self.statements_dir = os.path.join(self.main_dir, "accounts", "statements")
-        self.create_app_directories()
 
         self.title("Simple Bank Transaction Manager")
         self.configure_window()

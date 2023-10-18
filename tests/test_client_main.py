@@ -7,7 +7,7 @@ from TransactionManager.Client import Client
 from TransactionManager.FileHelper import FileHelper
 
 class TestClientFrameMain:
-    test_main_dir = "test_user_data_TestClientFrameMain"
+    test_main_dir = "test_user_data"
     client = Client(test_main_dir)
     client.update_idletasks()
     page = client.main_frame

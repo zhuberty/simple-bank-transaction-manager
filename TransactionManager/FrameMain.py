@@ -1,3 +1,4 @@
+import os
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import filedialog
@@ -30,6 +31,7 @@ class FrameMain(Frame):
         dialog_result = FileHelper.open_file_dialog("Select CSV File to Import")
         if FileHelper.is_valid_file(dialog_result):
             self.log("Importing file: " + dialog_result)
-            FileHelper.copy_file_to_folder(dialog_result, self.controller.statements_dir)
+            tmp_dir = FileHelper.path(self.controller.statements_dir, "tmp")
+            FileHelper.copy_file_to_folder(dialog_result, tmp_dir)
         else:
             self.log("Error: File must be a csv, xls, or xlsx file.")

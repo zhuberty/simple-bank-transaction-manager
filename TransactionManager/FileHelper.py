@@ -20,6 +20,8 @@ class FileHelper:
     @staticmethod
     def copy_file_to_folder(src_path, dest_folder):
         dest_path = join(dest_folder, basename(src_path))
+        if not os.path.exists(dest_path):
+            FileHelper.create_dirs(dest_folder)
         shutil.copy(src_path, dest_path)
 
     @staticmethod
@@ -71,4 +73,8 @@ class FileHelper:
     @staticmethod
     def rmdir_recursively(dir_path):
         shutil.rmtree(dir_path)
+
+    @staticmethod
+    def path(*args):
+        return os.path.join(*args)
 

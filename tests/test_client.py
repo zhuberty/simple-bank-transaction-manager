@@ -2,7 +2,7 @@ from TransactionManager.Client import Client
 
 
 class TestClient:
-    test_main_dir = "test_user_data_TestClient"
+    test_main_dir = "test_user_data"
     client = Client(test_main_dir)
     client.update_idletasks()
 

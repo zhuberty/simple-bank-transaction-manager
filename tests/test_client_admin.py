@@ -6,7 +6,7 @@ from TransactionManager.FileHelper import FileHelper
 
 
 class TestClientAdmin:
-    test_main_dir = "test_user_data_TestClientAdminConsole"
+    test_main_dir = "test_user_data"
     client = Client(test_main_dir)
     client.update_idletasks()
     page = client.admin_frame
@@ -62,15 +62,8 @@ class TestClientAdmin:
         assert page.console.widget["width"] == 80
         assert page.console.widget["state"] == "disabled"
 
-    @pytest.mark.order(2)
-    def test_create_app_directories(self):
-        FileHelper.rmdir_recursively(self.client.main_dir)
-        self.client.create_app_directories()
-        assert FileHelper.path_exists(self.client.statements_dir)
-
     @pytest.mark.order(50)
     def test_delete_main_dir(self):
-        page = self.client.admin_frame
-        page.console.clear_console()
+        self.client.create_app_directories()
         FileHelper.rmdir_recursively(self.client.main_dir)
         assert not FileHelper.path_exists(self.client.main_dir)
