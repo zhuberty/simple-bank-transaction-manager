@@ -1,14 +1,18 @@
-import os
+from typing import TYPE_CHECKING
 from tkinter import *
 from tkinter.ttk import *
 from .Console import Console
 from .WidgetHelper import WidgetHelper
 
+if TYPE_CHECKING:
+    from .Client import Client
 
-class FrameAdmin(Frame):
-    def __init__(self, parent, controller):
+
+class PageAdmin(Frame):
+    def __init__(self, parent: Frame, controller: "Client"):
         super().__init__(parent)
         self.controller = controller
+        self.controller.page_admin = self
         self.MAX_CONOLE_LINES = 200
         self.errors = []
         self.current_console_length = 0
@@ -23,7 +27,7 @@ class FrameAdmin(Frame):
         self.log("Initialized application.")
         
         self.clear_console_btn = WidgetHelper.create_button(self, "Clear Console", lambda: self.console.clear_console(), 1, 1, "ew")
-        self.frame_main_btn = WidgetHelper.create_button(self, "Home", lambda: self.controller.main_frame.tkraise(), 1, 0, "ew")
+        self.frame_main_btn = WidgetHelper.create_button(self, "Home", lambda: self.controller.page_home.tkraise(), 1, 0, "ew")
 
     def configure_grid(self):
         self.grid_rowconfigure(2, weight=1)

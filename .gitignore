@@ -164,3 +164,4 @@ cython_debug/
 
 # Transcation Manager
 TransactionManager/user_data/
+TransactionManager/test_user_data/

@@ -77,4 +77,7 @@ class FileHelper:
     @staticmethod
     def path(*args):
         return os.path.join(*args)
-
+    
+    @staticmethod
+    def get_filename(filepath):
+        return os.path.basename(filepath)

@@ -1,23 +1,24 @@
 import os
 from tkinter import *
 from tkinter.ttk import *
-from .FrameAdmin import FrameAdmin
-from .FrameMain import FrameMain
 from .FileHelper import FileHelper
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from .PageAdmin import PageAdmin
+    from .PageHome import PageHome
 
 class Client(Tk):
     def __init__(self, main_dir):
         super().__init__()
         self.main_dir = FileHelper.get_dirpath(__file__, main_dir)
         self.statements_dir = os.path.join(self.main_dir, "accounts", "statements")
-
         self.title("Simple Bank Transaction Manager")
         self.configure_window()
+        self.configure_grid()
         self.container = self.configure_container()
-        self.admin_frame = FrameAdmin(self.container, self)
-        self.main_frame = FrameMain(self.container, self)
-        self.main_frame.tkraise()
+        self.page_admin: "PageAdmin" = None
+        self.page_home: "PageHome" = None
 
     def configure_window(self):
         window_width = 1200
@@ -27,12 +28,14 @@ class Client(Tk):
         y = self.winfo_screenheight() / 2 - window_height / 2
         self.geometry("%dx%d+%d+%d" % (window_width, window_height, x, y))
 
-    def configure_container(self):
+    def configure_grid(self):
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+    def configure_container(self) -> Frame:
         container = Frame(self)
-        container.pack(side="top", fill="both", expand=True)
+        container.grid(row=0, column=0, sticky="nsew")
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         return container
 
-    def create_app_directories(self):
-        FileHelper.create_dirs(self.statements_dir)

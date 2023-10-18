@@ -16,5 +16,5 @@ class TestClient:
         assert self.client.title() == "Simple Bank Transaction Manager"
 
     def test_frames_created(self):
-        assert self.client.admin_frame is not None
-        assert self.client.main_frame is not None
+        assert self.client.page_admin is not None
+        assert self.client.page_home is not None
