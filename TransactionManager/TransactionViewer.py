@@ -87,9 +87,8 @@ class TransactionViewer(Frame):
         for index, row in df.iterrows():
             self.transactions_viewer.insert(parent="", index="end", iid=index, values=row.tolist() + [""])
 
-    def is_valid_csv_file(self, filepath):
-        return filepath.endswith(".csv")
-
-    def view_transactions_from_file(self, filepath):
+    def display_transactions(self, filepath):
         if self.is_valid_csv_file(filepath):
             self.load_csv_to_table(filepath)
+        else:
+            print("Error: File must be a csv, xls, or xlsx file.")

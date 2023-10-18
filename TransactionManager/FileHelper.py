@@ -81,3 +81,18 @@ class FileHelper:
     @staticmethod
     def get_filename(filepath):
         return os.path.basename(filepath)
+    
+    @staticmethod
+    def delete_file(filepath):
+        os.remove(filepath)
+
+    @staticmethod
+    def read_csv(filepath):
+        with open(filepath, "r") as file:
+            return file.readlines()
+        
+    @staticmethod
+    def append_csv(filepath, lines):
+        with open(filepath, "a") as file:
+            file.writelines(lines)
+    

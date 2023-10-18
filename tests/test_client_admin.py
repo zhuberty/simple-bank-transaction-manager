@@ -4,11 +4,12 @@ import pytest
 from TransactionManager.Client import Client
 from TransactionManager.PageAdmin import PageAdmin
 from TransactionManager.PageHome import PageHome
+from TransactionManager.main import create_pages
 
 class TestClientAdmin:
     test_main_dir = "test_user_data"
     client = Client(test_main_dir)
-    client.init_pages(PageAdmin(client.container, client), PageHome(client.container, client))
+    create_pages(client)
     client.update_idletasks()
     page = client.page_admin
     log = client.page_admin.console.log_message

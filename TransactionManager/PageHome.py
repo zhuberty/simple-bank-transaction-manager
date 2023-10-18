@@ -19,6 +19,7 @@ class PageHome(Frame):
         self.admin_btn = WidgetHelper.create_button(self.btn_container, "Go to Admin", lambda: self.controller.page_admin.tkraise(), 0, 0, "ew")
         self.import_transactions_btn = WidgetHelper.create_button(self.btn_container, "Import File", self.import_transactions_btn_event, 0, 1, "ew")
         self.transaction_viewer_frame = TransactionViewer(self)
+        self.transactions_location = FileHelper.path(self.controller.statements_dir, "transactions.csv")
 
     def configure_grid(self):
         self.grid(row=0, column=0, sticky="nsew")
@@ -46,6 +47,10 @@ class PageHome(Frame):
         return FileHelper.path(tmp_dir, FileHelper.get_filename(dialog_result))
 
     def import_transactions(self, file_name):
+        self.log("Importing transactions from file: " + file_name)
         filepath = FileHelper.path(self.controller.statements_dir, "tmp", file_name)
-        self.transaction_viewer_frame.view_transactions_from_file(filepath)
-        self.log("Imported transactions from file: " + filepath)
+        transactions = FileHelper.read_csv(filepath)
+        if not FileHelper.path_exists(self.transactions_location):
+            FileHelper.create_file(self.transactions_location)
+        FileHelper.append_csv(self.transactions_location, transactions)
+        FileHelper.delete_file(filepath)
