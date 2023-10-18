@@ -26,7 +26,6 @@ class TransactionViewer(Frame):
         self.configure_scrollbar()
         self.transactions_viewer.bind("<Double-1>", self.on_item_double_click)
 
-
     def configure_columns(self):
         column_config = {
             "Account": {"width": 150, "anchor": W, "heading": "Account"},
@@ -44,7 +43,6 @@ class TransactionViewer(Frame):
         for col, conf in column_config.items():
             self.transactions_viewer.column(col, width=conf["width"], anchor=conf["anchor"], stretch=conf.get("stretch", YES))
             self.transactions_viewer.heading(col, text=conf["heading"], anchor=conf["anchor"])
-
 
     def configure_scrollbar(self):
         self.scrollbar = Scrollbar(self.transactions_container, orient="vertical", command=self.transactions_viewer.yview)
@@ -66,7 +64,6 @@ class TransactionViewer(Frame):
             self.editor.focus_set()
             self.editor.bind("<Return>", lambda e: self.update_tags(row_id))
             self.editor.bind("<FocusOut>", lambda e: self.update_tags(row_id))
-
 
     def update_tags(self, row_id):
         updated_value = self.editor.get()
@@ -91,10 +88,7 @@ class TransactionViewer(Frame):
             self.transactions_viewer.insert(parent="", index="end", iid=index, values=row.tolist() + [""])
 
     def is_valid_csv_file(self, filepath):
-        if filepath.endswith(".csv"):
-            return True
-        else:
-            return False
+        return filepath.endswith(".csv")
 
     def view_transactions_from_file(self, filepath):
         if self.is_valid_csv_file(filepath):
