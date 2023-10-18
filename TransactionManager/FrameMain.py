@@ -48,14 +48,3 @@ class FrameMain(Frame):
             FileHelper.copy_file_to_folder(dialog_result, self.controller.statements_dir)
         else:
             self.controller.admin_frame.console.log_message("Error: File must be a csv, xls, or xlsx file.")
-
-    def open_file_dialog(self, import_file_window):
-        dialog_result = FileHelper.open_file_dialog("Select CSV File to Import")
-        self.open_file_dialog_callback(dialog_result, import_file_window)
-
-    def open_file_dialog_callback(self, dialog_result, import_file_window):
-        if FileHelper.is_valid_csv_file(dialog_result):
-            self.controller.admin_frame.log_message("Importing file: " + dialog_result)
-        else:
-            self.controller.admin_frame.log_message("Error: File must be a csv file")
-        import_file_window.destroy()
