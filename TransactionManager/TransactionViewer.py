@@ -20,19 +20,14 @@ class TransactionViewer(Frame):
         self.transactions_container.grid_columnconfigure(2, weight=0)
 
     def configure_transactions_viewer(self):
-        # Create a treeview for the table
         self.transactions_viewer = Treeview(self.transactions_container)
         self.transactions_viewer.grid(row=0, column=1, sticky="nsew")
-        
-        # Configurations
         self.configure_columns()
         self.configure_scrollbar()
-        
         self.transactions_viewer.bind("<Double-1>", self.on_item_double_click)
 
 
     def configure_columns(self):
-        # Dictionary to store column configurations
         column_config = {
             "Account": {"width": 150, "anchor": W, "heading": "Account"},
             "ChkRef": {"width": 100, "anchor": W, "heading": "ChkRef"},
@@ -44,9 +39,7 @@ class TransactionViewer(Frame):
         }
 
         self.transactions_viewer["columns"] = tuple(column_config.keys())
-
-        # Disabling the default column
-        self.transactions_viewer.column("#0", width=0, stretch=NO)
+        self.transactions_viewer.column("#0", width=0, stretch=NO)  # Disable default column
 
         for col, conf in column_config.items():
             self.transactions_viewer.column(col, width=conf["width"], anchor=conf["anchor"], stretch=conf.get("stretch", YES))
@@ -54,7 +47,6 @@ class TransactionViewer(Frame):
 
 
     def configure_scrollbar(self):
-        # Add vertical scrollbar
         self.scrollbar = Scrollbar(self.transactions_container, orient="vertical", command=self.transactions_viewer.yview)
         self.transactions_viewer.configure(yscrollcommand=self.scrollbar.set)
         self.scrollbar.grid(row=0, column=2, sticky="ns")
@@ -62,12 +54,9 @@ class TransactionViewer(Frame):
     def on_item_double_click(self, event):
         row_id = self.transactions_viewer.identify_row(event.y)
         col_id = self.transactions_viewer.identify_column(event.x)
-        
-        # Check if both row_id and col_id are valid (i.e., non-empty strings)
         if not row_id or not col_id:
             return
 
-        # Only allow editing for the "Tags" column
         if col_id == "#7":  # Tags column
             x, y, width, height = self.transactions_viewer.bbox(row_id, col_id)
             current_value = self.transactions_viewer.item(row_id, "values")[6]

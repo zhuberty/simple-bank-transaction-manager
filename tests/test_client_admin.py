@@ -15,7 +15,6 @@ class TestClientAdmin:
         page = self.client.admin_frame
         assert page.console["height"] == 10
         assert page.console["width"] == 80
-        # make sure the debug window is read-only
         assert page.console["state"] == "disabled"
 
     def test_clear_console(self):
@@ -57,10 +56,9 @@ class TestClientAdmin:
 
     @pytest.mark.order(1)
     def test_init_console(self):
-        page = self.client.admin_frame  # Updated line
+        page = self.client.admin_frame
         assert page.console.widget["height"] == 10
         assert page.console.widget["width"] == 80
-        # make sure the debug window is read-only
         assert page.console.widget["state"] == "disabled"
 
     @pytest.mark.order(2)
