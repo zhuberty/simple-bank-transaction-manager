@@ -21,8 +21,9 @@ class Client(Tk):
         self.page_home: "PageHome" = None
 
     def configure_window(self):
-        window_width = 1200
-        window_height = 800
+        # calculate the window size based on percent of screen size
+        window_width = int(self.winfo_screenwidth() * 0.8)
+        window_height = int(self.winfo_screenheight() * 0.7)
         # center the window on the screen
         x = self.winfo_screenwidth() / 2 - window_width / 2
         y = self.winfo_screenheight() / 2 - window_height / 2
