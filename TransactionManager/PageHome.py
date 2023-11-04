@@ -4,6 +4,7 @@ from tkinter.ttk import *
 from .TransactionViewer import TransactionViewer
 from .FileHelper import FileHelper
 from .WidgetHelper import WidgetHelper
+from .PieChart import PieChart
 
 if TYPE_CHECKING:
     from .Client import Client
@@ -20,18 +21,30 @@ class PageHome(Frame):
         self.import_transactions_btn = WidgetHelper.create_button(self.btn_container, "Import File", self.import_transactions_btn_event, 0, 1, "ew")
         self.transactions_filepath = FileHelper.path(self.controller.statements_dir, "transactions.csv")
         self.transaction_viewer = TransactionViewer(self, self.transactions_filepath)
+        self.chart_frame = PieChart(self, self.get_pie_chart_data())
+        self.init_widgets()
         self.init_transactions_file()
         self.transaction_viewer.display_transactions()
 
+    def init_widgets(self):
+        self.transaction_viewer.grid(row=1, column=0, sticky="nsew")
+        self.chart_frame.grid(row=2, column=0, sticky="nsew")
 
     def configure_grid(self):
         self.grid(row=0, column=0, sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=0)
-        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=0)  # Button container
+        self.grid_rowconfigure(1, weight=1)  # Transaction viewer
+        self.grid_rowconfigure(2, weight=1)  # Pie chart
+
+        # Initialize and grid the button container
         self.btn_container = Frame(self)
-        self.btn_container.grid(row=0, column=0, sticky="nsew")
+        self.btn_container.grid(row=0, column=0, sticky="nsew", columnspan=2)
         WidgetHelper.configure_grid(self.btn_container, 1, 2)
+
+        # Create buttons
+        self.admin_btn = WidgetHelper.create_button(self.btn_container, "Go to Admin", lambda: self.controller.page_admin.tkraise(), 0, 0, "ew")
+        self.import_transactions_btn = WidgetHelper.create_button(self.btn_container, "Import File", self.import_transactions_btn_event, 0, 1, "ew")
 
     def import_transactions_btn_event(self):
         dialog_result = FileHelper.open_file_dialog("Select CSV File to Import")
@@ -62,3 +75,7 @@ class PageHome(Frame):
             FileHelper.create_file(self.transactions_filepath)
         if FileHelper.is_empty(self.transactions_filepath):
             FileHelper.append_csv(self.transactions_filepath, ",".join(self.transaction_viewer.get_transaction_columns()) + "\n")
+
+    def get_pie_chart_data(self):
+        data = {'Rent': 500, 'Groceries': 300, 'Entertainment': 200, 'Utilities': 100}
+        return data
