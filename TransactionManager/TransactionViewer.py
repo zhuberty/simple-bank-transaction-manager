@@ -1,12 +1,13 @@
 from tkinter import *
 from tkinter.ttk import *
-
+from .FileHelper import FileHelper
 import pandas as pd
 
 
 class TransactionViewer(Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, transactions_filepath):
         super().__init__(parent)
+        self.transactions_filepath = transactions_filepath
         self.configure_grid()
         self.configure_transactions_viewer()
 
@@ -18,6 +19,9 @@ class TransactionViewer(Frame):
         self.transactions_container.grid_columnconfigure(0, weight=0)
         self.transactions_container.grid_columnconfigure(1, weight=1)
         self.transactions_container.grid_columnconfigure(2, weight=0)
+
+    def get_transaction_columns(self):
+        return self.transactions_viewer["columns"]
 
     def configure_transactions_viewer(self):
         self.transactions_viewer = Treeview(self.transactions_container)
@@ -71,24 +75,37 @@ class TransactionViewer(Frame):
         values[6] = updated_value
         self.transactions_viewer.item(row_id, values=values)
         self.editor.destroy()
+        self.update_transactions_file()
+    
+    def update_transactions_file(self):
+        df = self.get_df_from_transactions_viewer()
+        df.to_csv(self.transactions_filepath, index=False)
 
-    def preprocess_dataframe(self, filepath):
-        df = pd.read_csv(filepath)
-        df['Debit'] = df['Debit'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else "")
-        df['Credit'] = df['Credit'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else "")
-        object_columns = ['Account', 'ChkRef', 'Date', 'Description', 'Debit', 'Credit']
-        df[object_columns] = df[object_columns].fillna("")
+    def get_df_from_transactions_viewer(self):
+        df = pd.DataFrame(columns=self.get_transaction_columns())
+        for index, row in enumerate(self.transactions_viewer.get_children()):
+            values = self.transactions_viewer.item(row, "values")
+            df.loc[index] = values
+        return df
+
+    def process_file_into_df(self, filepath):
+        df = pd.DataFrame()
+        file_empty = FileHelper.is_empty(filepath)
+        if not file_empty:
+            df = pd.read_csv(filepath)
+            # add a tags column and make sure it isn't nan
+            object_columns = list(self.get_transaction_columns())
+            df[object_columns] = df[object_columns].fillna("")
         return df
 
     def load_csv_to_table(self, filepath):
         for row in self.transactions_viewer.get_children():
             self.transactions_viewer.delete(row)
-        df = self.preprocess_dataframe(filepath)
+        df = self.process_file_into_df(filepath)
+        # sort by date
+        df = df.sort_values(by=['Date'], ascending=False)
         for index, row in df.iterrows():
-            self.transactions_viewer.insert(parent="", index="end", iid=index, values=row.tolist() + [""])
+            self.transactions_viewer.insert(parent="", index="end", iid=index, values=row.tolist())
 
-    def display_transactions(self, filepath):
-        if self.is_valid_csv_file(filepath):
-            self.load_csv_to_table(filepath)
-        else:
-            print("Error: File must be a csv, xls, or xlsx file.")
+    def display_transactions(self):
+        self.load_csv_to_table(self.transactions_filepath)

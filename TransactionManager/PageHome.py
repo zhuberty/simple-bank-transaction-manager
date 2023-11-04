@@ -18,8 +18,11 @@ class PageHome(Frame):
         self.configure_grid()
         self.admin_btn = WidgetHelper.create_button(self.btn_container, "Go to Admin", lambda: self.controller.page_admin.tkraise(), 0, 0, "ew")
         self.import_transactions_btn = WidgetHelper.create_button(self.btn_container, "Import File", self.import_transactions_btn_event, 0, 1, "ew")
-        self.transaction_viewer_frame = TransactionViewer(self)
-        self.transactions_location = FileHelper.path(self.controller.statements_dir, "transactions.csv")
+        self.transactions_filepath = FileHelper.path(self.controller.statements_dir, "transactions.csv")
+        self.transaction_viewer = TransactionViewer(self, self.transactions_filepath)
+        self.init_transactions_file()
+        self.transaction_viewer.display_transactions()
+
 
     def configure_grid(self):
         self.grid(row=0, column=0, sticky="nsew")
@@ -32,7 +35,7 @@ class PageHome(Frame):
 
     def import_transactions_btn_event(self):
         dialog_result = FileHelper.open_file_dialog("Select CSV File to Import")
-        if FileHelper.is_valid_file(dialog_result):
+        if FileHelper.is_valid_csv(dialog_result):
             self.copy_file_to_tmp(dialog_result)
             file_name = FileHelper.get_filename(dialog_result)
             self.import_transactions(file_name)
@@ -50,7 +53,12 @@ class PageHome(Frame):
         self.log("Importing transactions from file: " + file_name)
         filepath = FileHelper.path(self.controller.statements_dir, "tmp", file_name)
         transactions = FileHelper.read_csv(filepath)
-        if not FileHelper.path_exists(self.transactions_location):
-            FileHelper.create_file(self.transactions_location)
-        FileHelper.append_csv(self.transactions_location, transactions)
+        FileHelper.append_csv(self.transactions_filepath, transactions[1:])
         FileHelper.delete_file(filepath)
+        self.transaction_viewer.display_transactions()
+
+    def init_transactions_file(self):
+        if not FileHelper.path_exists(self.transactions_filepath):
+            FileHelper.create_file(self.transactions_filepath)
+        if FileHelper.is_empty(self.transactions_filepath):
+            FileHelper.append_csv(self.transactions_filepath, ",".join(self.transaction_viewer.get_transaction_columns()) + "\n")

@@ -14,7 +14,7 @@ class FileHelper:
         return dialog_result
 
     @staticmethod
-    def is_valid_file(filepath):
+    def is_valid_csv(filepath):
         return filepath.endswith(('.csv', '.xls', '.xlsx'))
 
     @staticmethod
@@ -36,7 +36,7 @@ class FileHelper:
     @staticmethod
     def import_to_folder(title="Select File", folder="target_folder"):
         file_path = FileHelper.open_file_dialog(title)
-        if FileHelper.is_valid_file(file_path):
+        if FileHelper.is_valid_csv(file_path):
             FileHelper.copy_file_to_folder(file_path, folder)
             return True
         return False
@@ -89,10 +89,14 @@ class FileHelper:
     @staticmethod
     def read_csv(filepath):
         with open(filepath, "r") as file:
-            return file.readlines()
+            lines = file.readlines()
+            return lines
         
     @staticmethod
     def append_csv(filepath, lines):
         with open(filepath, "a") as file:
             file.writelines(lines)
-    
+
+    @staticmethod
+    def is_empty(filepath):
+        return os.stat(filepath).st_size == 0
